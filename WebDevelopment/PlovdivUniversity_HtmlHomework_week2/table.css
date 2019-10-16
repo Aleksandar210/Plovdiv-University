@@ -1,0 +1,24 @@
+table{
+    text-align:center;
+    width:50%;
+    border-style: solid;
+    border-width: thick;
+}
+
+.last{
+    width:50;
+
+}
+th {
+    height: 50px;
+    background-color:orange;
+  }
+  tr {
+  background-color:orange;
+  }
+
+  .movieColor
+  {
+      background-color:green;
+     color:white;
+  }

@@ -1,0 +1,11 @@
+th, td {
+    padding: 15px;
+    text-align: left;
+    background-color:purple;
+    color:white;
+    text-align:center;
+  }
+  table{
+    border-style: solid;
+    border-width: thick;
+  }

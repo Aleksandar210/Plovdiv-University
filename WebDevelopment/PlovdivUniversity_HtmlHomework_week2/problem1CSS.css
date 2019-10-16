@@ -1,0 +1,30 @@
+aside {
+    float: right;
+    width: 30%;
+}
+section{
+    float:left;
+    width:70%;
+}
+h2{
+    text-align:center;
+}
+body{
+    background-color:white;
+}
+footer{
+    
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        
+        
+        text-align: center;
+      
+}
+
+.mnsection
+{
+    text-align:left;
+}
