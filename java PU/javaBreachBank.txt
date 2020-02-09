@@ -1,0 +1,105 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+public class Main {
+	static Scanner scan = new Scanner(System.in);
+	public static void main(String[] args) {
+		
+	}
+	
+	
+	
+	
+	//function to enter expenditures
+	static int[] expenditure(int days) {
+		int[] array = new int[days];
+		for(int i =0;i<days;i++) {
+			System.out.print("enter expens: ");
+			array[i] = Integer.parseInt(scan.nextLine());
+		}
+		
+		return array;
+	}
+	
+	
+	
+	
+	
+	//function to enter days
+	static int enterDays() {
+		int days;
+		do {
+			System.out.print("enter days: ");
+			days = Integer.parseInt(scan.nextLine());
+			
+		}while(days<1 || days>(days*(Math.pow(10, 5))));
+		
+		return days;
+	}
+	
+	//function to enter trailing days
+	static int enterTrailingDays(int numberDays) {
+		int d;
+		do {
+			System.out.print("Enter trailing days: ");
+			d = Integer.parseInt(scan.nextLine());
+		}while(d<1 || d>numberDays);
+		return d;
+	}
+	
+	//function to calculate Median
+	static double[] calculateMedian(int[] expenses, int d,int dataIndex) {
+		int[] currentExpensePeriods = new int[d];
+		for(int i =dataIndex;i>=0;i--) {
+			currentExpensePeriods[i] = expenses[i];
+		}
+		
+		
+		sortExpensesDays(currentExpensePeriods);		//sorting the array form leat to great
+		
+		double[] median = new double[2];
+		if(currentExpensePeriods.length%2==0) {
+			median[0] = currentExpensePeriods[currentExpensePeriods.length/2] + currentExpensePeriods[currentExpensePeriods.length/2]-1;
+			median[0]/=median[0];
+			median[1] = 0;
+		}else {
+			median[0] = currentExpensePeriods[currentExpensePeriods.length/2];
+			median[1] = 1;
+		}
+		
+		return median;
+		
+		
+	}
+	
+	
+	//sort from least to greatest
+	static void sortExpensesDays(int[] expenses) {
+		ArrayList<Integer> temp = new ArrayList<Integer>(expenses.length);
+		for(int i =0;i<expenses.length;i++) {
+			temp.add(expenses[i]);
+		}
+		
+		Collections.sort(temp);
+		
+		for(int i =0;i<expenses.length;i++) {
+			expenses[i] = temp.get(i);
+		}
+		
+		
+		
+	}
+	
+	
+	//function to notify the user of number of time he was notified
+	static int displayNotificationCount(int d) {
+		int count=0;
+		
+		
+		return count;
+	}
+	
+	
+	
+
+}
