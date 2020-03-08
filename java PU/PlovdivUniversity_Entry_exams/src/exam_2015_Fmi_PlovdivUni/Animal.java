@@ -8,7 +8,7 @@ public class Animal {
 	private String ownerLastName;
 
 	
-	public Animal(String name,String type,int age, String ownerNames, ) {
+	public Animal(String name,String type,int age, String ownerNames ) {
 		this.name= name;
 		this.type = type;
 		this.age = age;
@@ -20,7 +20,7 @@ public class Animal {
 
 	@Override
 	public String toString() {
-		return this.name+" Animale Type: "+this.type+" age :"+this.age+" owner: "+getOwnerFirstName()+ " "+ getOwnerLastName()+ " ID: "+this.ownerId; 
+		return this.name+" Animale Type: "+this.type+" age :"+this.age+" owner: "+getOwnerFirstName()+ " "+ getOwnerLastName(); 
 	}
 
 	public String getName() {
