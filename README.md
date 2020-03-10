@@ -1,7 +1,8 @@
-#Web Develoment:
+# What I have learned and done.
 
-this diroectory contains all my university web homework
+* Done OOP exams form previous years.
+* Learned OOP basics such as inheritance, incapsulation and Polymorphism.
+* Learned how to create and interact with objects and classes.
+* Learned some basic HTML and CSS and did a project(Informative website on helicopters).
 
-#What I learned
-*Understanding basic HTML construction related to web pages
-*Knowledge in basic CSS
+
