@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Register</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="style-register.css">
+</head>
+<body>
+<header>
+	<nav>
+		<li ><a href="index.html">Home</a></li>
+		<li ><a href="#news">News</a></li>
+		<li ><a href="register.html">Contact</a></li>
+	</nav>
+</header>
+<main>
+<h1>Register</h1>
+<hr class="style14">
+<form>
+	<label for="name">Име</label>
+	<input  class="input" type="text" name="name" required="true" placeholder="First name">
+
+	<label for="lastName">Фамилно име</label>
+	<input class="input" type="text" name="lastName" required="true" placeholder="Фамилно име">
+
+	<label for="E-mail">Choose your email</label>
+	<input class="input" type="text" name="E-mail" required="true" placeholder="@gmail.com">
+	<label for="birthday">Дата на раждане</label>
+	<input class="input" type="date" name="birthday" required="true">
+	
+	<label for="option">Gender</label>
+	<div id="radio-container">
+    <input type="radio" name="gender" value="male"> Male
+    <input type="radio" name="gender" value="female"> Female
+    <input type="radio" name="gender" value="other"> Other 
+    </div><br>
+	<label for="E-mail">E-mail</label>
+	<input class="input" type="E-mail" required="true"
+	placeholder="Enter Email" name="email">
+	<br>
+	<iframe src="iframe.html">
+	</iframe>
+	<label for="text">Country</label>
+	<select>
+		<option>Bulgaria</option>
+		<option>Macedonia</option>
+		<option>Bahamas</option>
+		<option>Austria</option>
+	</select>
+	<label for="password">Password</label>
+	<input class="input" type="password" name="password" required="true" placeholder="Enter password">
+
+	<label for="password">Repeat password</label>
+	<input class="input"  type="password" name="password" required="true" placeholder="Enter password">
+	<input type="radio" name="remember">
+
+	<label for="text">Remember me</label>
+	<input id="radio-container-term" type="radio" name="terms">
+
+	<label for="text"> By creating an account you agree to out <a href ="https://bg.linguee.com/%D0%B0%D0%BD%D0%B3%D0%BB%D0%B8%D0%B9%D1%81%D0%BA%D0%B8-%D0%B1%D1%8A%D0%BB%D0%B3%D0%B0%D1%80%D1%81%D0%BA%D0%B8/%D0%BF%D1%80%D0%B5%D0%B2%D0%BE%D0%B4/terms+and+conditions.html">Terms & Privacy</a>. </label>
+	<button type="button">Cancel</button>
+	<button type="button">Sign Up</button>
+</form>
+</main>
+<footer>
+	<a href="#" class="fa fa-facebook"></a>
+<a href="#" class="fa fa-twitter"></a>
+<a href="#" class="fa fa-google"></a>
+	<p>&copy; All rights reserved!</p>
+</footer>
+</body>
+</html>
