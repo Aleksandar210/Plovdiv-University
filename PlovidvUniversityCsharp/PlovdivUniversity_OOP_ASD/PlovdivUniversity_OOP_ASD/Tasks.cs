@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
@@ -27,9 +28,23 @@ namespace PlovdivUniversity_OOP_ASD
             private int till100Boost;
             private int after100Boost;
 
-            public CurrentCar(params string[] currentCarData)
-            {
 
+
+            public CurrentCar(params string[] currentCarData) :this()
+            {
+                
+            this.Brand = currentCarData[3];
+            this.Weight = double.Parse(currentCarData[4]);
+            this.HorsePower = int.Parse(currentCarData[5]);
+            this.Till100Boost = this.HorsePower;
+            this.After100Boost = this.HorsePower;
+
+
+                
+            }
+            private void ValidateBrand(string brand)
+            {
+                this.Brand = brand;
             }
 
             public string Brand
@@ -75,7 +90,38 @@ namespace PlovdivUniversity_OOP_ASD
                 }
                 private set
                 {
+                    if (value <= 0)
+                    {
+                        throw new ArgumentException("Invalid Horse Powers");
 
+                    }
+                }
+            }
+
+            public int Till100Boost
+            {
+                get
+                {
+                    return this.till100Boost;
+
+                }
+                private set
+                {
+                    this.till100Boost = 1 / (value) * 1000 / 2;
+                }
+            }
+
+
+            public int After100Boost
+            {
+                get
+                {
+                    return this.till100Boost;
+
+                }
+                private set
+                {
+                    this.after100Boost = 1 / (value) * 1000;
                 }
             }
 
