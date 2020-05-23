@@ -62,7 +62,7 @@ namespace PlovdivUniversity_OOP_ASD
         }
         private void DetermineWinnerByPoints(List<CurrentCar> currentRacers, Dictionary<string, int> points)
         {
-            currentRacers = currentRacers.OrderBy(a => a.Till100Boost).ToList();
+            currentRacers = currentRacers.OrderByDescending(a => a.Till100Boost).ToList();
             for (int i=0; i < currentRacers.Count; i++)
             {
                 points[currentRacers[i].DriverName] += 3 * i;

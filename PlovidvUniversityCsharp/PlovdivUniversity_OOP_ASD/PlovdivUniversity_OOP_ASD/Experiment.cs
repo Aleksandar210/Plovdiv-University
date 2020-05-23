@@ -26,8 +26,17 @@ namespace PlovdivUniversity_OOP_ASD
                 enterCarData = Console.ReadLine();
             }
 
-            Console.WriteLine(currentRacers.Count);
-            Console.WriteLine(currentStats.Count);
+        
+            currentRacers.Sort((a,b)=>a.HorsePower.CompareTo(b.HorsePower));
+
+            DetermineWinnerByPoints(currentRacers, currentStats);
+           currentStats =  currentStats.OrderByDescending(a => a.Value).ToDictionary(a => a.Key, a => a.Value);
+            foreach(var item in currentStats)
+            {
+                Console.WriteLine(item.Key + " " + item.Value);
+
+            }
+
         }
 
 
@@ -35,18 +44,16 @@ namespace PlovdivUniversity_OOP_ASD
 
         private void DetermineWinnerByPoints(List<Car> currentRacers, Dictionary<string, int> points)
         {
-            currentRacers = currentRacers.OrderBy(a => a.To100).ToList();
-            for (int i = 0; i < currentRacers.Count; i++)
+            currentRacers =  currentRacers.OrderByDescending(a => a.To100).ToList();
+            for(int i = 0; i < currentRacers.Count; i++)
             {
                 points[currentRacers[i].DriverNames] += 3 * i;
             }
 
-
-
-            currentRacers = currentRacers.OrderBy(a => a.After100).ToList();
-            for (int i = 0; i < currentRacers.Count; i++)
+            currentRacers = currentRacers.OrderByDescending(a => a.TrackBTime).ToList();
+            for(int i = 0; i < currentRacers.Count; i++)
             {
-                points[currentRacers[i].DriverNames] += 3 * i;
+                points[currentRacers[i].DriverNames] += i * 3;
             }
         }
 
@@ -65,6 +72,7 @@ namespace PlovdivUniversity_OOP_ASD
         private double weight;
         private int to100;
         private int after100;
+        private int trackBTime;
 
         public Car(params string[] currentData)
         {
@@ -76,6 +84,7 @@ namespace PlovdivUniversity_OOP_ASD
             this.To100 = 100;
             this.After100 = 101;
             this.ApplyBoost(currentData[5]);
+            this.TrackBTime = this.After100;
 
         }
 
@@ -100,6 +109,18 @@ namespace PlovdivUniversity_OOP_ASD
           private  set
             {
                 this.brand = value;
+            }
+        }
+
+        public int TrackBTime 
+        {
+            get
+            {
+                return this.trackBTime;
+            }
+           private set
+            {
+                this.trackBTime = this.to100 + value;
             }
         }
 
