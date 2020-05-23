@@ -3,42 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace PlovdivUniversity_OOP_ASD
 {
     class Tasks
     {
+        
 
         public void CarRace()
         {
            
             List<CurrentCar> currentCarsOrderedBy = new List<CurrentCar>();
             Dictionary<string, int> currentRacerStats = new Dictionary<string, int>();
-            
 
 
+         
 
-            string enterCarData = Console.ReadLine();
+            string enterCarData=Console.ReadLine();
             string[] dataCollectedFromInut;
-            while (!enterCarData.Equals("end", StringComparison.OrdinalIgnoreCase))
+
+            while (true)
             {
-                dataCollectedFromInut = enterCarData.Split("->");
-
-
-
-                CurrentCar car;
-                car = new CurrentCar(dataCollectedFromInut);
-
-                if (!currentRacerStats.ContainsKey(car.DriverName))
+                if (enterCarData.Equals("end", StringComparison.OrdinalIgnoreCase))
                 {
-                    currentRacerStats.Add(car.DriverName, 0);
+                    break;
                 }
-                currentCarsOrderedBy.Add(car);
+                else
+                {
+                    dataCollectedFromInut = enterCarData.Split("->");
+
+                    if (!currentRacerStats.ContainsKey(string.Concat(dataCollectedFromInut[0] + " ", dataCollectedFromInut[1])))
+                    {
+
+                        currentRacerStats.Add(string.Concat(dataCollectedFromInut[0] + " ", dataCollectedFromInut[1]), 0);
+                        currentCarsOrderedBy.Add(new CurrentCar(dataCollectedFromInut));
+
+                    }
+
+                    
+
+                }
                 enterCarData = Console.ReadLine();
 
-
             }
+
+            currentCarsOrderedBy.Sort();
 
             DetermineWinnerByPoints(currentCarsOrderedBy, currentRacerStats);
             currentRacerStats.OrderByDescending(a => a.Value).ToDictionary(a => a.Key, a => a.Value);
@@ -68,7 +79,7 @@ namespace PlovdivUniversity_OOP_ASD
 
 
 
-        private struct CurrentCar
+        internal struct CurrentCar
         {
             private string nameOfDriver;
             private string brand;
@@ -77,12 +88,20 @@ namespace PlovdivUniversity_OOP_ASD
             private int till100Boost;
             private int after100Boost;
 
-
-
-            public CurrentCar(params string[] currentCarData) :this()
+            private CurrentCar(bool temp)
             {
+                nameOfDriver = null;
+                brand = null;
+                horsePower = 0;
+                weight=0;
+                till100Boost = 0;
+                after100Boost = 0;
+            }
 
-                this.DriverName = string.Concat(currentCarData[0]+" ", currentCarData[1]);    
+            public CurrentCar(params string[] currentCarData) :this(true)
+            {
+                
+            this.DriverName = string.Concat(currentCarData[0]+" ", currentCarData[1]);    
             this.Brand = currentCarData[2];
             this.Weight = double.Parse(currentCarData[3]);
             this.HorsePower = int.Parse(currentCarData[4]);
@@ -92,10 +111,7 @@ namespace PlovdivUniversity_OOP_ASD
 
                 
             }
-            private void ValidateBrand(string brand)
-            {
-                this.Brand = brand;
-            }
+           
 
             public string Brand
             {
@@ -119,15 +135,9 @@ namespace PlovdivUniversity_OOP_ASD
 
                 private set
                 {
-                    if (value <= 0)
-                    {
-                        throw new ArgumentException("Invali Weight");
-
-                    }
-                    else
-                    {
-                        this.Weight = value;
-                    }
+                  
+                        this.weight = value;
+                    
                 }
             }
 
@@ -140,11 +150,7 @@ namespace PlovdivUniversity_OOP_ASD
                 }
                 private set
                 {
-                    if (value <= 0)
-                    {
-                        throw new ArgumentException("Invalid Horse Powers");
-
-                    }
+                    this.horsePower = value;
                 }
             }
 
