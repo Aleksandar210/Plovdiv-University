@@ -14,8 +14,10 @@ namespace PlovdivUniversity_OOP_ASD
             Dictionary<string, Dictionary<string, CurrentCar>> currentRacers = new Dictionary<string, Dictionary<string, CurrentCar>>();
 
             string enterCarData = Console.ReadLine();
+            string[] dataCollectedFromInut;
             while (!enterCarData.Equals("end", StringComparison.OrdinalIgnoreCase))
             {
+                dataCollectedFromInut = enterCarData.Split(" ");
 
             }
         }
@@ -33,12 +35,12 @@ namespace PlovdivUniversity_OOP_ASD
             public CurrentCar(params string[] currentCarData) :this()
             {
                 
-            this.Brand = currentCarData[3];
-            this.Weight = double.Parse(currentCarData[4]);
-            this.HorsePower = int.Parse(currentCarData[5]);
+            this.Brand = currentCarData[2];
+            this.Weight = double.Parse(currentCarData[3]);
+            this.HorsePower = int.Parse(currentCarData[4]);
             this.Till100Boost = this.HorsePower;
             this.After100Boost = this.HorsePower;
-
+            this.ApplyBoost(currentCarData[5]);
 
                 
             }
@@ -127,6 +129,21 @@ namespace PlovdivUniversity_OOP_ASD
 
             public void ApplyBoost(string currentBoost)
             {
+                switch (currentBoost.ToLower())
+                {
+                    case "do-100":
+
+                        this.horsePower -= (this.horsePower / 100) * 30;
+                        break;
+                    case "do-200":
+                        this.horsePower -= (this.horsePower / 100) * 20;
+                        break;
+                }
+            }
+
+            public override string ToString()
+            {
+                return string.Format($"{this.Brand} {this.Weight}-weight {this.Till100Boost}-seconds for 100km/h and {this.after100Boost} for 200");
 
             }
 
