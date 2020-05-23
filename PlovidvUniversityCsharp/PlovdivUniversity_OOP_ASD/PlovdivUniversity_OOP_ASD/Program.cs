@@ -6,11 +6,21 @@ namespace PlovdivUniversity_OOP_ASD
     {
         static void Main()
         {
+            //Depricated----------------------------
             //Tasks currentTasks = new Tasks();
             // currentTasks.CarRace();
+            //--------------------------------------
 
+            //Task1
             Experiment experiment = new Experiment();
             experiment.CarRace();
+            //
+
+            //Task2
+
+            //
+
+
 
         }
     }

@@ -50,7 +50,7 @@ namespace PlovdivUniversity_OOP_ASD
                 points[currentRacers[i].DriverNames] += 3 * i;
             }
 
-            currentRacers = currentRacers.OrderByDescending(a => a.TrackBTime).ToList();
+            currentRacers = currentRacers.OrderByDescending(a => a.After100).ToList();
             for(int i = 0; i < currentRacers.Count; i++)
             {
                 points[currentRacers[i].DriverNames] += i * 3;
@@ -72,7 +72,7 @@ namespace PlovdivUniversity_OOP_ASD
         private double weight;
         private int to100;
         private int after100;
-        private int trackBTime;
+        
 
         public Car(params string[] currentData)
         {
@@ -84,7 +84,7 @@ namespace PlovdivUniversity_OOP_ASD
             this.To100 = 100;
             this.After100 = 101;
             this.ApplyBoost(currentData[5]);
-            this.TrackBTime = this.After100;
+           
 
         }
 
@@ -112,17 +112,7 @@ namespace PlovdivUniversity_OOP_ASD
             }
         }
 
-        public int TrackBTime 
-        {
-            get
-            {
-                return this.trackBTime;
-            }
-           private set
-            {
-                this.trackBTime = this.to100 + value;
-            }
-        }
+       
 
         public int HorsePower
         {
