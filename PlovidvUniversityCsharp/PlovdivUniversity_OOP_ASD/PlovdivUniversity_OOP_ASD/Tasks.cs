@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -11,32 +12,61 @@ namespace PlovdivUniversity_OOP_ASD
 
         public void CarRace()
         {
-            Dictionary<string, Dictionary<string, CurrentCar>> currentRacers = new Dictionary<string, Dictionary<string, CurrentCar>>();
-            Dictionary<string, int> currentPoints = new Dictionary<string, int>();
+           
+            List<CurrentCar> currentCarsOrderedBy = new List<CurrentCar>();
+            Dictionary<string, int> currentRacerStats = new Dictionary<string, int>();
+            
+
+
 
             string enterCarData = Console.ReadLine();
             string[] dataCollectedFromInut;
             while (!enterCarData.Equals("end", StringComparison.OrdinalIgnoreCase))
             {
-                dataCollectedFromInut = enterCarData.Split(" ");
+                dataCollectedFromInut = enterCarData.Split("->");
 
-                if (currentRacers.ContainsKey(dataCollectedFromInut[0]))
+
+
+                CurrentCar car;
+                car = new CurrentCar(dataCollectedFromInut);
+
+                if (!currentRacerStats.ContainsKey(car.DriverName))
                 {
-                    if (!currentRacers[dataCollectedFromInut[0]].ContainsKey(dataCollectedFromInut[1]))
-                    {
-                        currentRacers[dataCollectedFromInut[0]].Add(dataCollectedFromInut[1], new CurrentCar(dataCollectedFromInut));
-                    }
-                   
+                    currentRacerStats.Add(car.DriverName, 0);
                 }
-                else 
-                {
-                    currentRacers.Add(dataCollectedFromInut[0], new Dictionary<string, CurrentCar>());
-                    currentRacers[dataCollectedFromInut[0]].Add(dataCollectedFromInut[1], new CurrentCar(dataCollectedFromInut));
-                }
+                currentCarsOrderedBy.Add(car);
+                enterCarData = Console.ReadLine();
+
+
+            }
+
+            DetermineWinnerByPoints(currentCarsOrderedBy, currentRacerStats);
+            currentRacerStats.OrderByDescending(a => a.Value).ToDictionary(a => a.Key, a => a.Value);
+            foreach(var item in currentRacerStats)
+            {
+                Console.WriteLine(item.Key+" "+item.Value);
             }
 
 
         }
+        private void DetermineWinnerByPoints(List<CurrentCar> currentRacers, Dictionary<string, int> points)
+        {
+            currentRacers = currentRacers.OrderBy(a => a.Till100Boost).ToList();
+            for (int i=0; i < currentRacers.Count; i++)
+            {
+                points[currentRacers[i].DriverName] += 3 * i;
+            }
+
+
+
+            currentRacers = currentRacers.OrderBy(a => a.After100Boost).ToList();
+            for(int i = 0; i < currentRacers.Count; i++)
+            {
+                points[currentRacers[i].DriverName] += 3 * i;
+            }
+        }
+
+
 
         private struct CurrentCar
         {
@@ -52,7 +82,7 @@ namespace PlovdivUniversity_OOP_ASD
             public CurrentCar(params string[] currentCarData) :this()
             {
 
-                this.DriverName = string.Concat(currentCarData[0], currentCarData[1]);    
+                this.DriverName = string.Concat(currentCarData[0]+" ", currentCarData[1]);    
             this.Brand = currentCarData[2];
             this.Weight = double.Parse(currentCarData[3]);
             this.HorsePower = int.Parse(currentCarData[4]);
