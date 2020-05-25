@@ -27,7 +27,7 @@ namespace PlovdivUniversity_OOP_ASD
             }
 
         
-            currentRacers.Sort((a,b)=>a.HorsePower.CompareTo(b.HorsePower));
+           
 
             DetermineWinnerByPoints(currentRacers, currentStats);
            currentStats =  currentStats.OrderByDescending(a => a.Value).ToDictionary(a => a.Key, a => a.Value);

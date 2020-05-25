@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace PlovdivUniversity_OOP_ASD
 {
@@ -12,16 +13,15 @@ namespace PlovdivUniversity_OOP_ASD
             //--------------------------------------
 
             //Task1
-            CarRaceTask currentCarTask = new CarRaceTask();
-            currentCarTask.CarRace();
+            // CarRaceTask currentCarTask = new CarRaceTask();
+            // currentCarTask.CarRace();
             //
 
             //Task2
-           // Disciplines current = new Disciplines();
-          //  current.DisciplinesTask();
+            Disciplines disciplineTask = new Disciplines();
+             disciplineTask.DisciplinesTask();
             //
-
-
+          
 
         }
     }
