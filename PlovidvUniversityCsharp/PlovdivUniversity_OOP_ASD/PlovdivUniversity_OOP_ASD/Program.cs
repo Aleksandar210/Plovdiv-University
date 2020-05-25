@@ -12,12 +12,13 @@ namespace PlovdivUniversity_OOP_ASD
             //--------------------------------------
 
             //Task1
-            Experiment experiment = new Experiment();
+            CarRaceTask experiment = new CarRaceTask();
             experiment.CarRace();
             //
 
             //Task2
-
+            Disciplines current = new Disciplines();
+            current.DisciplinesTask();
             //
 
 
