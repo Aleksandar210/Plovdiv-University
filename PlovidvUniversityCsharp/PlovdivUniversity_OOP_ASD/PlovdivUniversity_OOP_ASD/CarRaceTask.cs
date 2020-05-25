@@ -18,7 +18,7 @@ namespace PlovdivUniversity_OOP_ASD
             while (!enterCarData.Equals("end"))
             {
                 data = enterCarData.Split("->");
-                if(!currentStats.ContainsKey(string.Concat(data[0]+" " + data[1])))
+                if(!currentStats.ContainsKey(string.Concat(data[0]+" "+ data[1])))
                 {
                     currentStats.Add(string.Concat(data[0] + " " + data[1]), 0);
                     currentRacers.Add(new Car(data));
@@ -44,37 +44,53 @@ namespace PlovdivUniversity_OOP_ASD
 
         private void DetermineWinnerByPoints(List<Car> currentRacers, Dictionary<string, int> points)
         {
+            while (currentRacers.Count != 0)
+            {
+                Car currentRacer = currentRacers[0];
+                currentRacers.RemoveAt(0);
+                for (int i = 0; i < currentRacers.Count; i++)
+                {
+                    Battle(currentRacer, currentRacers[i], points);
 
-
-
+                }
+            }
         }
 
 
-        public void WordOddRepeatence()
+
+
+
+        private void Battle(Car racer1, Car racer2, Dictionary<string, int> points)
         {
-            Dictionary<string, int> wordRepeatence = new Dictionary<string, int>();
-            string enterText = Console.ReadLine();
-           string[] allWords = enterText.Split().Select(e => e.ToLower()).ToArray();
-            foreach(var item in allWords)
+            if (racer1.To100 < racer2.To100)
             {
-                if (!wordRepeatence.ContainsKey(item))
-                {
-                    wordRepeatence.Add(item, 0);
-                }
-                else
-                {
-                    wordRepeatence[item]++;
-                }
+                points[racer1.DriverNames] += 3;
+            }
+            else
+            {
+                points[racer2.DriverNames] += 3;
             }
 
-            Dictionary<string, int> currentOddRepeatedWords = wordRepeatence.Where(e => e.Value % 2 != 0)
-                .ToDictionary(e => e.Key, e => e.Value);
-            foreach(var item in currentOddRepeatedWords)
+            if (racer1.To100 < racer2.To100 && racer1.After100 < racer2.After100)
             {
-                Console.Write(item + " ");
-
+                points[racer1.DriverNames] += 3;
             }
+            else
+            {
+                points[racer2.DriverNames] += 3;
+            }
+
         }
+
+
+
+
+    }
+
+       
+        
+
+     
     }
 
 
@@ -87,8 +103,7 @@ namespace PlovdivUniversity_OOP_ASD
         private string brand;
         private int horsePower;
         private double weight;
-        private double to100;
-        private double after100;
+      
         
         
 
@@ -155,39 +170,16 @@ namespace PlovdivUniversity_OOP_ASD
                 this.weight = value;
             }
         }
-        public double To100
-        {
-            get
-            {
-                return this.to100;
-
-            }
-
-            private set
-            {
-
-            }
-            
-        }
+        public double To100 { get; private set; }
+       
 
         private double CalculateSecondsTo100(int horsePower)
         {
             return ((1 / (double)horsePower) * 1000) / 2;
         }
 
-        public double After100
-        {
-            get
-            {
-                return this.after100;
-            }
-
-            private set
-            {
-
-            }
-           
-        }
+        public double After100 { get; private set; }
+        
 
         private double CalculateSecondsAfter100(int horsePower)
         {
@@ -196,7 +188,7 @@ namespace PlovdivUniversity_OOP_ASD
 
         private void ApplyBoost(string currentBoost)
         {
-            switch (currentBoost.ToLower())
+            switch (currentBoost)
             {
                 case "do-100":
 
@@ -213,4 +205,4 @@ namespace PlovdivUniversity_OOP_ASD
             return string.Format($"");
         }
     }
-}
+

@@ -40,7 +40,7 @@ namespace PlovdivUniversity_OOP_ASD
                     }
                     else
                     {
-                        currentDisciplines.Add(currentData[0], new Dictionary<string, Dictionary<string, double>>);
+                        currentDisciplines.Add(currentData[0], new Dictionary<string, Dictionary<string, double>>());
                         currentDisciplines[currentData[0]].Add(currentData[1], new Dictionary<string, double>());
                         currentDisciplines[currentData[0]][currentData[1]].Add(currentData[2], double.Parse(currentData[3]));
                         currentGradesAdded.Add(currentData[0], new HashSet<string>());
