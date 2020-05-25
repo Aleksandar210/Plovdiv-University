@@ -26,14 +26,17 @@ namespace PlovdivUniversity_OOP_ASD
                 enterCarData = Console.ReadLine();
             }
 
-        
+          //  foreach(var item in currentRacers)
+          //  {
+             //   Console.WriteLine(item);
+           // }
            
 
             DetermineWinnerByPoints(currentRacers, currentStats);
-           currentStats =  currentStats.OrderByDescending(a => a.Value).ToDictionary(a => a.Key, a => a.Value);
+          currentStats =  currentStats.OrderByDescending(a => a.Value).ThenBy(e=>e.Key).ToDictionary(a => a.Key, a => a.Value);
             foreach(var item in currentStats)
             {
-                Console.WriteLine(item.Key + " " + item.Value);
+               Console.WriteLine(item.Key + " " + item.Value);
 
             }
 
@@ -202,7 +205,7 @@ namespace PlovdivUniversity_OOP_ASD
 
         public override string ToString()
         {
-            return string.Format($"");
+            return string.Format($" seconds to 100 {this.To100} seconds to 200 {this.After100} horsePower {this.HorsePower}");
         }
     }
 

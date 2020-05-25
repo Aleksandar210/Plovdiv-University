@@ -7,19 +7,16 @@ namespace PlovdivUniversity_OOP_ASD
     {
         static void Main()
         {
-            //Depricated----------------------------
-            //Tasks currentTasks = new Tasks();
-            // currentTasks.CarRace();
+            
+            CarRaceTask currentTasks = new CarRaceTask();
+             currentTasks.CarRace();
             //--------------------------------------
 
-            //Task1
-            // CarRaceTask currentCarTask = new CarRaceTask();
-            // currentCarTask.CarRace();
-            //
+            
 
             //Task2
-            Disciplines disciplineTask = new Disciplines();
-             disciplineTask.DisciplinesTask();
+           // Disciplines disciplineTask = new Disciplines();
+            // disciplineTask.DisciplinesTask();
             //
           
 
