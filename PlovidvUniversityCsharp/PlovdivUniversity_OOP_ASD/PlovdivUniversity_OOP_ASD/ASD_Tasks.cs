@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace PlovdivUniversity_OOP_ASD
@@ -9,6 +10,8 @@ namespace PlovdivUniversity_OOP_ASD
     {
 
 
+        //task 3 Word Odd repeat
+        //--------------------------------------------------------------------------------
         public void RepeatenceWords()
         {
             string enterText = Console.ReadLine();
@@ -142,6 +145,95 @@ namespace PlovdivUniversity_OOP_ASD
             return numbersLine;
         }
         //-------------------------------------------------------------------------------------------------------------------------------------
+
+
+      
+            //task 4
+            //-------------------------------------------------------------------------------------------------
+        private void ArrayManipulationWithMethods()
+        {
+            Random rand = new Random();
+            int[] currentArray = new int[10];
+            for(int i = 0; i < currentArray.Length; i++)
+            {
+                currentArray[i] = rand.Next(0, int.MaxValue);
+            }
+            Console.WriteLine("Average Value = " + AverageArrayValue(currentArray));
+            Console.Write("Enter number to check if its in Array: ");
+            int number = int.Parse(Console.ReadLine());
+            Console.WriteLine(CheckIfNumberIsInArray(number, currentArray));
+            Console.WriteLine("Second Smallest Number: " + FindSecondSmallestNumber(currentArray));
+            int[] newArray = new int[10];
+            Console.WriteLine("New Array before transfering data");
+            foreach(var item in newArray)
+            {
+                Console.Write(item + " ");
+
+            }
+            TransferDataBetweenArrays(currentArray, newArray);
+            Console.WriteLine("After transfer");
+            foreach (var item in newArray)
+            {
+                Console.Write(item + " ");
+
+            }
+        }
+
+
+        private void TransferDataBetweenArrays(int[] currentArray, int[] arrayToTransferIn)
+        {
+            Array.Copy(currentArray, arrayToTransferIn, currentArray.Length);
+
+
+        }
+
+
+        private int FindSecondSmallestNumber(int[] currentArray)
+        {
+            Array.Sort(currentArray);
+            int smallest = currentArray[0];
+            for(int i = 1; i <= currentArray.Length; i++)
+            {
+                if (currentArray[i] < smallest)
+                {
+                    return currentArray[i];
+                }
+            }
+
+            return -1;
+
+        }
+
+        private bool CheckIfNumberIsInArray(int number, int[] currentArray)
+        {
+            bool isIn = false;
+            for(int i = 0; i < currentArray.Length; i++)
+            {
+                if (currentArray[i] == number)
+                {
+                    return true;
+                }
+            }
+
+            return isIn;
+
+        }
+
+
+        private int AverageArrayValue(int[] currentArray)
+        {
+            int average = 0;
+            for(int i = 0; i < currentArray.Length; i++)
+            {
+                average += currentArray[i];
+            }
+
+            return average /= currentArray.Length;
+
+
+        }
+
+        //-------------------------------------------------------------------------------------------------------------
 
     }
 }
