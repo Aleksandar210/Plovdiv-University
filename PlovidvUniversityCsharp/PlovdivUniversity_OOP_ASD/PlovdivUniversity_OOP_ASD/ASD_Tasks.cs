@@ -10,6 +10,31 @@ namespace PlovdivUniversity_OOP_ASD
     {
 
 
+
+        //task2
+        //----------------------------------------------------------------------------------
+
+        private void ProductTask()
+        {
+            Dictionary<string, int> currentProducts = new Dictionary<string, int>();
+            string enterProduct = Console.ReadLine();
+            string[] data;
+            while (!enterProduct.Equals("end"))
+            {
+                data = enterProduct.Split();
+                if (!currentProducts.ContainsKey(data[0]))
+                {
+                    currentProducts.Add(data[0], int.Parse(data[1]));
+                }
+                else
+                {
+
+                }
+            }
+        }
+
+        //-------------------------------------------------------------------------------
+
         //task 3 Word Odd repeat
         //--------------------------------------------------------------------------------
         public void RepeatenceWords()
