@@ -32,9 +32,15 @@ namespace PlovdivUniversity_OOP_ASD
             }
         }
 
+
+
+        //task1
+        //---------------------------------------------------------------------------------------------------------------
+
         public void MatrixMinElements()
         {
-            int[,] currentMatrix = new int[5, 5];
+            int[][] currentMatrix  =  new int[5][];
+            int[] finalResutArray = new int[5];
             
             string addNumbers;
             for(int i = 0; i < 5; i++)
@@ -42,11 +48,59 @@ namespace PlovdivUniversity_OOP_ASD
                 addNumbers = Console.ReadLine();
                 for(int j = 0; j < 5; j++)
                 {
-                    FixNumberAdding()
+                    currentMatrix[i] = FixNumberAdding(addNumbers);
+                }
+            }
+            int k = SmallestElemOfAll(currentMatrix);
+            Dictionary<int, int> currentRowSmallestElemPosition = new Dictionary<int, int>();
+            FindRowColPosCurrentSmall(currentRowSmallestElemPosition, currentMatrix);
+            
+            for(int i = 0; i < 5; i++)
+            {
+                finalResutArray[i] = i - (currentRowSmallestElemPosition[i] * k);
+            }
+
+            foreach(var item in finalResutArray)
+            {
+                Console.Write(item + " ");
+            }
+        }
+
+        private void FindRowColPosCurrentSmall(Dictionary<int,int> current,int[][] currentMatrix)
+        {
+            for(int i = 0; i < 5; i++)
+            {
+                int minElem = 0;
+                current.Add(i, 0);
+                for(int j = 0; j < 5; j++)
+                {
+                    if (currentMatrix[i][j] < minElem)
+                    {
+                        minElem = currentMatrix[i][j];
+                        current[i] = minElem;
+                    }
                 }
             }
         }
-        private  void FixNumberAdding(string addedNumbers,int[] currentRow)
+
+        private int SmallestElemOfAll(int[][] currentMatrix)
+        {
+            int smallestElem = 0;
+            for(int i = 0; i < 5; i++)
+            {
+                for(int j = 0; j < 5; j++)
+                {
+                    if (currentMatrix[i][j] < smallestElem)
+                    {
+                        smallestElem = currentMatrix[i][j];
+                    }
+                }
+            }
+            return smallestElem;
+
+        }
+
+        private  int[] FixNumberAdding(string addedNumbers)
         {
             Random rand = new Random();
             int[] current = addedNumbers.Split().Select(e=>int.Parse(e)).ToArray();
@@ -75,18 +129,19 @@ namespace PlovdivUniversity_OOP_ASD
             }
             else if (current.Length == 5)
             {
-                
+                return current;
             }
             else
             {
                 for (int i = 0; i < numbersLine.Length; i++)
                 {
-                    currentRow[i] = rand.Next(1, int.MaxValue);
+                    numbersLine[i] = rand.Next(1, int.MaxValue);
                 }
             }
 
             return numbersLine;
         }
+        //-------------------------------------------------------------------------------------------------------------------------------------
 
     }
 }
