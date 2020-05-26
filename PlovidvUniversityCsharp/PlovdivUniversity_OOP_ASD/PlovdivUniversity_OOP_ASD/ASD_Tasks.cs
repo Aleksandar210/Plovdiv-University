@@ -28,9 +28,16 @@ namespace PlovdivUniversity_OOP_ASD
                 }
                 else
                 {
-
+                    currentProducts[data[0]] += int.Parse(data[1]);
                 }
             }
+
+            currentProducts = currentProducts.OrderByDescending(e => e.Value).ToDictionary(e => e.Key, e => e.Value);
+            foreach(var item in currentProducts)
+            {
+                Console.WriteLine(item.Key+" "+item.Value);
+            }
+
         }
 
         //-------------------------------------------------------------------------------
