@@ -1,0 +1,35 @@
+{
+	"folders": {},
+	"connections": {
+		"microsoft-1791fe08132-5f32b5bac4460a89": {
+			"provider": "sqlserver",
+			"driver": "microsoft",
+			"name": "StockMarketDB",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "DESKTOP-MUOBF1E\\SQLEXPRESS",
+				"port": "1433",
+				"database": "StockMarketDB",
+				"url": "jdbc:sqlserver://;serverName=DESKTOP-MUOBF1E\\SQLEXPRESS;databaseName=StockMarketDB",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-authentication@": "WINDOWS_INTEGRATED",
+					"@dbeaver-show-all-schemas@": "false"
+				},
+				"handlers": {}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}

@@ -1,0 +1,1 @@
+--Used for checking values and data faster.
