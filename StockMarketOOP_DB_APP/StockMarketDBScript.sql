@@ -88,71 +88,73 @@ INSERT INTO Cities(CityName,CountryID)
 		('Dubrovnik ',4),
 		('Sveti Ivan Zelina',4),
 		('Slatina',4),
-		('',5),
-		('',5),
-		('',5),
-		('',5),
-		('',5),
-		('',6),
-		('',6),
-		('',6),
-		('',6),
-		('',6),
-		('',7), 
-		('',7), 
-		('',7), 
-		('',7), 
-		('',7), 
-		('',8), 
-		('',8), 
-		('',8), 
-		('',8), 
-		('',8),
-		('',9),
-		('',9),
-		('',9),
-		('',9),
-		('',10),
-		('',10),
-		('',10),
-		('',10),
-		('',11),
-		('',11),
-		('',11),
-		('',11),
-		('',12),
-		('',12),
-		('',12),
-		('',12),
-		('',13),
-		('',13),
-		('',13),
-		('',13),
-		('',14),
-		('',14),
-		('',14),
-		('',14),
-		('',15),
-		('',15),
-		('',15),
-		('',15),
-		('',16),
-		('',16),
-		('',16),
-		('',16),
-		('',17),
-		('',17),
-		('',17),
-		('',17),
+		('Achna',5),
+		('Buffavento',5),
+		('Dhrousha',5),
+		('Gerolakkos',5),
+		('Idalium',5),
+		('Praha ',6),
+		('Opava',6),
+		('Jihlava ',6),
+		('Liberec ',6),
+		('Brno ',6),
+		('Kolding',7), 
+		('Svendborg',7), 
+		('Aabenraa',7), 
+		('redensborg',7), 
+		('Ringe',7), 
+		('Tallinn',8), 
+		('Keila',8), 
+		('Lihula',8), 
+		('Narva',8), 
+		('Kallaste',8),
+		('Porvoo',9),
+		('Helsink',9),
+		('Forssa',9),
+		('Lapua',9),
+		('Clermont',10),
+		('Roubaix',10),
+		('Dunkirk',10),
+		('Pau',10),
+		('Berlin',11),
+		('Hamburg',11),
+		('Frankfurt',11),
+		('Shtutgard',11),
+		('Athens',12),
+		('Larissa',12),
+		('Evosmos',12),
+		('Kamatero',12),
+		('Budapest',13),
+		('Debrecen',13),
+		('Szeged',13),
+		('Miskolc',13),
+		('Rome',14),
+		('Florence',14),
+		('Venice',14),
+		('Milano',14),
+		('Warsaw',15),
+		('Krakow',15),
+		('Varshava',15),
+		('Opole',15),
+		('Stockholm',16),
+		('Borgholm',16),
+		('Flen',16),
+		('Filipstad',16),
+		('Abrantes',17),
+		('Esmoriz',17),
+		('Faro',17),
+		('Guarda',17)
 
-		--TO DO FINISH THIS
+--Testing purpose
+SELECT CityName, Countries.CountryName FROM Cities
+JOIN Countries ON Cities.CountryID = Countries.ID
 
 --CREATING TABLE APPCREDENTIALS
 CREATE TABLE AppCredentials(
 ID INT PRIMARY KEY IDENTITY NOT NULL,
 Username VARCHAR(40) NOT NULL,
 EmailAddress VARCHAR(30) NOT NULL,
-Password
+UserPassword Binary(64) NOT NULL
 )
 
 --Creating table Users
@@ -167,4 +169,26 @@ AppCredential INT FOREIGN KEY REFERENCES AppCredentials(ID) NOT NULL,
 CityID INT FOREIGN KEY REFERENCES Cities(ID) NOT NULL,
 CONSTRAINT CHK_UserAge CHECK(Age>18),
 CONSTRAINT CHK_WalletAmount CHECK(WalletAmount>=0)
+)
+
+ALTER TABLE AppCredentials
+ADD UserID INT FOREIGN KEY REFERENCES Users(ID) NOT NULL
+
+--Creating table with offers
+CREATE TABLE ProductOffers(
+ID INT PRIMARY KEY IDENTITY NOT NULL,
+ProductID INT FOREIGN KEY REFERENCES Products(ID) NOT NULL,
+UserID INT FOREIGN KEY REFERENCES Users(ID) NOT NULL,
+IsOfferActive BIT DEFAULT(1),
+DateOfOffer DATETIME2 DEFAULT(GETDATE())
+)
+
+ALTER TABLE ProductOffers
+ADD CurrentAvaialbleQuantity SMALLINT  NOT NULL
+
+--Adding table purchases made
+CREATE TABLE PurcahsesMade(
+ID INT PRIMARY KEY IDENTITY NOT NULL,
+OfferID INT FOREIGN KEY REFERENCES ProductOffers(ID),
+UserID INT FOREIGN KEY REFERENCES Users(ID)   --The user who made the purchase.
 )
