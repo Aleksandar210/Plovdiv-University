@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 public class LoginFrame extends JFrame implements ActionListener {
 		DBHelper dbHelper =null;
 	    Container container = getContentPane();
-	    JLabel userLabel = new JLabel("USERNAME");
+	    JLabel userLabel = new JLabel("USERNAME/EMAIL");
 	    JLabel passwordLabel = new JLabel("PASSWORD");
 	    JTextField userTextField = new JTextField();
 	    JPasswordField passwordField = new JPasswordField();
@@ -45,8 +45,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 	    }
 
 	    public void setLocationAndSize() {
-	        userLabel.setBounds(50, 150, 100, 30);
-	        passwordLabel.setBounds(50, 220, 100, 30);
+	        userLabel.setBounds(25, 150, 1000, 30);
+	        passwordLabel.setBounds(25, 220, 100, 30);
 	        userTextField.setBounds(150, 150, 150, 30);
 	        passwordField.setBounds(150, 220, 150, 30);
 	        showPassword.setBounds(150, 250, 150, 30);
@@ -74,18 +74,30 @@ public class LoginFrame extends JFrame implements ActionListener {
 	        registerButton.addActionListener(this);
 	    }
 	    
-	    private int isLoginInfoCorrect(String username, String password) {
-	    	Pattern passwordPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
+	    private boolean isLoginInfoCorrect(String username, String password) {
+	    	
+	    	Pattern passwordPattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$%^&-+=()])(?=\\S+$).{8,20}$");
 	    	Matcher passwordMatcher = passwordPattern.matcher(password);
 	    	
-	    	Pattern emailPattern = Pattern.compile("^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$");
+	    	Pattern emailPattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 	    	Matcher emailMatcher = emailPattern.matcher(username);
 	    	
 	    	Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]{3,15}$");
 	    	Matcher usernameMatcher = usernamePattern.matcher(username);
 	    	
-	    	//if()
-	    	return 4;
+	    	boolean usernameMatcherFound = usernameMatcher.find();
+	    	boolean emailMatcherFound = emailMatcher.find();
+	    	boolean passwordMatcherFound = passwordMatcher.find();
+	    	
+	    	if((usernameMatcherFound || emailMatcherFound) && passwordMatcherFound) {
+	    		return true;
+	    	}else {
+	    		return false;
+	    	}
+	    }
+	    
+	    private boolean checkIfCredentialsMatchInDB(String username,String Password) {
+	    	return false;
 	    }
 
 	    @Override
@@ -95,11 +107,10 @@ public class LoginFrame extends JFrame implements ActionListener {
 	            String passwordText;
 	            userText = userTextField.getText();
 	            passwordText = passwordField.getText();
-	            //do method with logic on login
-	            if (userText.equalsIgnoreCase("alex")) {
+	            if (this.isLoginInfoCorrect(userText, passwordText)) {
 	                JOptionPane.showMessageDialog(this, "Login Successful");
 	            } else {
-	                JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+	                JOptionPane.showMessageDialog(this, "Invalid Username/E-mail or Password");
 	            }
 
 	        }
