@@ -18,6 +18,13 @@ CONSTRAINT CHK_ProductQuantity CHECK(ProductQuantity >0),
 CONSTRAINT CHK_ProductName CHECK(LEN(ProductName)>3)
 );
 
+--mistakes were made bo we fix them.
+ALTER TABLE Products 
+DROP CONSTRAINT CHK_ProductQuantity
+
+ALTER TABLE Products
+DROP COLUMN ProductQuantity
+
 --Testing table insertion
 GO
 INSERT INTO Products(ProductName,ProductQuantity,ProductPriceOnDelivery,ProductPriceOnPurchase)
@@ -171,6 +178,9 @@ CONSTRAINT CHK_UserAge CHECK(Age>18),
 CONSTRAINT CHK_WalletAmount CHECK(WalletAmount>=0)
 )
 
+ALTER TABLE Users
+ADD DateOfBirth DATETIME2 NOT NULL
+
 ALTER TABLE AppCredentials
 ADD UserID INT FOREIGN KEY REFERENCES Users(ID) NOT NULL
 
@@ -192,3 +202,12 @@ ID INT PRIMARY KEY IDENTITY NOT NULL,
 OfferID INT FOREIGN KEY REFERENCES ProductOffers(ID),
 UserID INT FOREIGN KEY REFERENCES Users(ID)   --The user who made the purchase.
 )
+
+--Creating stored procedure for password and registration details
+GO
+CREATE PROCEDURE dbo.uspEnterAppCredentialsOnRegister @Email VARCHAR(30), @Username VARCHAR(40), @UserPassword VARCHAR(20)
+AS
+
+GO
+
+--TO DO FINISH
