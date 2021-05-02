@@ -4,29 +4,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class RegistrationFrame extends JFrame implements ActionListener {
 		private DBHelper dbHelper;
+		private HashMap<String,ArrayList<String>> countriesAndCities;
 		// Components of the Form
 	    private Container c;
 	    private JLabel title;
 	    private JLabel name;
 	    private JTextField tname;
+	    private JLabel emailLabel;
+	    private JTextField emailTextField;
+	    private JLabel usernameLabel;
+	    private JTextField usernameTextField;
+	    private JLabel passwordLabel;
+	    private JPasswordField passwordField;
 	    private JLabel mno;
-	    private JComboBox tmno;
+	    private JComboBox countries;
 	    private JLabel gender;
-	    private JRadioButton male;
-	    private JRadioButton female;
+	    public JComboBox city;
 	    private ButtonGroup gengp;
 	    private JLabel dob;
 	    private JComboBox date;
@@ -37,7 +48,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    private JCheckBox term;
 	    private JButton sub;
 	    private JButton reset;
-	    private JButton alreadyHaveAnAccountButton;
+	    private JButton loginButton;
 	    private JTextArea tout;
 	    private JLabel res;
 	    private JTextArea resadd;
@@ -65,8 +76,11 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	  
 	    // constructor, to initialize the components
 	    // with default values.
-	    public RegistrationFrame(HashMap<String,ArrayList<String>>countriesAndCities)
+	    public RegistrationFrame()
 	    {
+	    	this.dbHelper = new DBHelper();
+	    	this.countriesAndCities = this.dbHelper.getCountriesWithCities();
+	    	
 	        setTitle("Stock Market Plovdvi University");
 	        setBounds(300, 90, 900, 600);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -99,11 +113,12 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        mno.setLocation(100, 150);
 	        c.add(mno);
 	  
-	        tmno = new JComboBox(countriesAndCities.keySet().toArray());
-	        tmno.setFont(new Font("Arial", Font.PLAIN, 15));
-	        tmno.setSize(150, 20);
-	        tmno.setLocation(200, 150);
-	        c.add(tmno);
+	        countries = new JComboBox(countriesAndCities.keySet().toArray());
+	        countries.setFont(new Font("Arial", Font.PLAIN, 15));
+	        countries.setSize(150, 20);
+	        countries.setLocation(200, 150);
+	        countries.addActionListener(countriesListener);
+	        c.add(countries);
 	  
 	        gender = new JLabel("City");
 	        gender.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -112,15 +127,14 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        c.add(gender);
 	        
 	        // may not be needed
-	        male = new JRadioButton("Male");
-	        male.setFont(new Font("Arial", Font.PLAIN, 15));
-	        male.setSelected(true);
-	        male.setSize(75, 20);
-	        male.setLocation(200, 200);
-	        c.add(male);
+	        city =new JComboBox(countriesAndCities.get(countries.getSelectedItem()).toArray());
+	        city.setFont(new Font("Arial", Font.PLAIN, 15));
+	        city.setSize(75, 20);
+	        city.setLocation(200, 200);
+	        c.add(city);
 	        
 	        // may not be needed
-	        female = new JRadioButton("Female");
+	        /*female = new JRadioButton("Female");
 	        female.setFont(new Font("Arial", Font.PLAIN, 15));
 	        female.setSelected(false);
 	        female.setSize(80, 20);
@@ -130,6 +144,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        gengp = new ButtonGroup();
 	        gengp.add(male);
 	        gengp.add(female);
+	        */
 	  
 	        dob = new JLabel("Date of birth");
 	        dob.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -155,27 +170,65 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        year.setLocation(320, 250);
 	        c.add(year);
 	  
+	        emailLabel = new JLabel("E-Mail");
+	        emailLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+	        emailLabel.setSize(100, 20);
+	        emailLabel.setLocation(100, 300);
+	        c.add(emailLabel);
+	        
+	        emailTextField = new JTextField();
+	        emailTextField.setFont(new Font("Arial", Font.PLAIN, 15));
+	        emailTextField.setSize(200, 20);
+	        emailTextField.setLocation(200, 300);
+	        c.add(emailTextField);
+	        
+	        usernameLabel = new JLabel("Username");
+	        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+	        usernameLabel.setSize(100, 20);
+	        usernameLabel.setLocation(100, 350);
+	        c.add(usernameLabel);
+	        
+	        usernameTextField = new JTextField();
+	        usernameTextField.setFont(new Font("Arial", Font.PLAIN, 15));
+	        usernameTextField.setSize(200, 20);
+	        usernameTextField.setLocation(200, 350);
+	        c.add(usernameTextField);
+	        
+	        passwordLabel = new JLabel("Password");
+	        passwordLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+	        passwordLabel.setSize(100, 20);
+	        passwordLabel.setLocation(100, 400);
+	        c.add(passwordLabel);
+	        
+	        passwordField = new JPasswordField();
+	        passwordField.setFont(new Font("Arial", Font.PLAIN, 15));
+	        passwordField.setSize(200, 20);
+	        passwordField.setLocation(200, 400);
+	        c.add(passwordField);
 	  
-	        term = new JCheckBox("Accept Terms And Conditions.");
-	        term.setFont(new Font("Arial", Font.PLAIN, 15));
-	        term.setSize(250, 20);
-	        term.setLocation(150, 300);
-	        c.add(term);
 	  
-	        sub = new JButton("Continue");
+	        sub = new JButton("Submit");
 	        sub.setFont(new Font("Arial", Font.PLAIN, 15));
 	        sub.setSize(100, 20);
-	        sub.setLocation(150, 350);
+	        sub.setLocation(75, 500);
 	        sub.addActionListener(this);
 	        c.add(sub);
 	  
 	        reset = new JButton("Reset");
 	        reset.setFont(new Font("Arial", Font.PLAIN, 15));
 	        reset.setSize(100, 20);
-	        reset.setLocation(270, 350);
+	        reset.setLocation(200, 500);
 	        reset.addActionListener(this);
 	        c.add(reset);
+	        
+	        loginButton = new JButton("Login?");
+	        loginButton.setFont(new Font("Arial", Font.PLAIN, 15));
+	        loginButton.setSize(100, 20);
+	        loginButton.setLocation(325, 500);
+	        loginButton.addActionListener(this);
+	        c.add(loginButton);
 	  
+	        
 	        tout = new JTextArea();
 	        tout.setFont(new Font("Arial", Font.PLAIN, 15));
 	        tout.setSize(300, 400);
@@ -199,13 +252,65 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	  
 	        setVisible(true);
 	    }
-	  
+	    
+	    private String passwordValditaion(String password) {
+	    	
+	    	Pattern passwordPattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#$%^&-+=()])(?=\\S+$).{8,20}$");
+	    	Matcher passwordMatcher = passwordPattern.matcher(password);
+	    	
+	    	if(passwordMatcher.find()) {
+	    		return "Correct";
+	    	}else {
+	    		return "Not Correct";
+	    	}
+	    }
+	    
+	    private String emailValidation(String email) {
+	    	Pattern emailPattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+	    	Matcher emailMatcher = emailPattern.matcher(email);
+	    	
+	    	if(emailMatcher.find()) {
+	    		return "Correct";
+	    	}else {
+	    		return "Not Correct";
+	    	}
+	    }
+	    
+	    private String usernameValidation(String username) {
+	    	Pattern emailPattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+	    	Matcher emailMatcher = emailPattern.matcher(username);
+	    	
+	    	if(emailMatcher.find()) {
+	    		return "Correct";
+	    	}else {
+	    		return "Not Correct";
+	    	}
+	    }
+	    
+	    private String nameValidation(String names) {
+	    	Pattern namePattern = Pattern.compile("[A-Z][a-z]+ [A-Z][a-z]+ [A-Z][a-z]+");
+	    	Matcher nameMatcher = namePattern.matcher(names);
+	    	
+	    	if(nameMatcher.find()) {
+	    		return "Correct";
+	    	}else {
+	    		return "Not Correct";
+	    	}
+	    }
+	    
 	    // method actionPerformed()
 	    // to get the action performed
 	    // by the user and act accordingly
 	    public void actionPerformed(ActionEvent e)
 	    {
 	        if (e.getSource() == sub) {
+	        	
+	        	if(this.usernameValidation(tname.getText()).equalsIgnoreCase("Correct") &&
+	        			this.emailValidation(this.emailTextField.getText()).equalsIgnoreCase("Correct") &&
+	        			this.passwordValditaion("aafa").equalsIgnoreCase("Correct")) {
+	        		
+	        	}
+	        	
 	           /* if (term.isSelected()) {
 	                String data1;
 	                String data
@@ -229,19 +334,25 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	                String data3 = "Address : " + tadd.getText();
 	                tout.setText(data + data1 + data2 + data3);*/
 	                tout.setEditable(false);
-	                res.setText("Registration Successfully..");
 	            } else if (e.getSource() == reset) {
 		            String def = "";
-		            tname.setText(def);
-		            tadd.setText(def);
-		            tmno.setSelectedIndex(0);
-		            res.setText(def);
+		            this.tname.setText(def);
+		            this.tadd.setText(def);
+		            this.countries.setSelectedIndex(0);
+		            this.res.setText(def);
 		            tout.setText(def);
 		            term.setSelected(false);
 		            date.setSelectedIndex(0);
 		            month.setSelectedIndex(0);
 		            year.setSelectedIndex(0);
-		            resadd.setText(def);
+		            this.resadd.setText(def);
+		            this.passwordField.setText(def);
+		            this.emailTextField.setText(def);
+		            this.usernameTextField.setText(def);
+		        }else if(e.getSource() == loginButton) {
+		        	this.dispose();
+		        	LoginFrame login = new LoginFrame();
+		        	login.setVisible(true);      	
 		        }else {
 	                tout.setText("");
 	                resadd.setText("");
@@ -249,7 +360,21 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	                            + " terms & conditions..");
 	        }
 	  
+	       
 	        
 	    }
+	    
+	    ActionListener countriesListener = new ActionListener() {
+	    	private DefaultComboBoxModel model;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			        String countrySelected = (String)countries.getSelectedItem();
+			        model = new DefaultComboBoxModel(countriesAndCities.get(countrySelected).toArray());
+			        city.setModel(model);
+				
+			}
+	    	
+	    };
 
 }

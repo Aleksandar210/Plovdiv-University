@@ -25,8 +25,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 	    JCheckBox showPassword = new JCheckBox("Show Password");
 
 
-	    public LoginFrame(DBHelper dbHelper) {
-	    	this.dbHelper = dbHelper;
+	    public LoginFrame() {
+	    	this.dbHelper = new DBHelper();
 	        setLayoutManager();
 	        setLocationAndSize();
 	        addComponentsToContainer();
@@ -131,8 +131,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 	        
 	        if(e.getSource() == registerButton) {
 	        	this.dispose();
-	        	//RegistrationFrame registerFrame = new RegistrationFrame();
-	        	//registerFrame.setVisible(true);
+	        	RegistrationFrame registerFrame = new RegistrationFrame();
+	        	registerFrame.setVisible(true);
 	        }
 	    }
 }

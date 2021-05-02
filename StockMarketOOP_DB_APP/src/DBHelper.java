@@ -9,8 +9,8 @@ import java.util.HashMap;
 public class DBHelper {
 
 	private String connectionUrlSqlServer = "jdbc:sqlserver://localhost\\sqlexpress;databaseName=StockMarketDB;integratedSecurity=true";;
-	
-	public void DBHelper() {
+	private HashMap<String,ArrayList<String>> currentCountriesWithCities;
+	public DBHelper() {
 		/*try {
 			Connection connection = DriverManager.getConnection(connectionUrlSqlServer);
 			System.out.println("Connected succsfuly.");
@@ -18,10 +18,15 @@ public class DBHelper {
 			System.out.println(e.getMessage());
 		}
 		*/
+		 currentCountriesWithCities = this.getCountriesWithCitiesFromDataBase();
 	}
 	
+	// 0 three-names, 1- Country, 2- City, 3 date of Birth, 4-email, 5-user name, 6 - password
+	public void registerNewUser(String[] suerDetails) {
+		
+	}
 	
-	public HashMap<String,ArrayList<String>> getCountriesWithCitiesFromDataBase() {
+	private HashMap<String,ArrayList<String>> getCountriesWithCitiesFromDataBase() {
 		HashMap<String,ArrayList<String>> countriesWithCities = null;
 		try {
 			Connection connection = DriverManager.getConnection(this.getConnectionString());
@@ -57,6 +62,10 @@ public class DBHelper {
 	
 	private void setConnectionString() {
 		this.connectionUrlSqlServer =  "jdbc:sqlserver://localhost\\sqlexpress;databaseName=StockMarketDB;integratedSecurity=true";
+	}
+	
+	public HashMap<String,ArrayList<String>> getCountriesWithCities(){
+		return this.currentCountriesWithCities;
 	}
 	
 }

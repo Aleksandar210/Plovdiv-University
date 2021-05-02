@@ -7,11 +7,10 @@ import java.util.Map;
 
 public class Main {	
 public static void main(String[] args) {
-	DBHelper dbHelper = new DBHelper();
-	HashMap<String,ArrayList<String>> currentCountriesWithCities = dbHelper.getCountriesWithCitiesFromDataBase();
+	//DBHelper dbHelper = new DBHelper();
 	//RegistrationFrame registerFrame = new RegistrationFrame(dbHelper);
 	//LoginFrame login = new LoginFrame(dbHelper);
-	RegistrationFrame frame = new RegistrationFrame(currentCountriesWithCities);	
+	RegistrationFrame frame = new RegistrationFrame();	
 	
 
 	}
