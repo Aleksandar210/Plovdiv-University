@@ -96,8 +96,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 	    	}
 	    }
 	    
+	    //TO DO
 	    private boolean checkIfCredentialsMatchInDB(String username,String Password) {
-	    	return false;
+	    	return false; 
 	    }
 
 	    @Override
@@ -129,7 +130,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 	        }
 	        
 	        if(e.getSource() == registerButton) {
-	        	
+	        	this.dispose();
+	        	RegistrationFrame registerFrame = new RegistrationFrame();
+	        	registerFrame.setVisible(true);
 	        }
 	    }
 }

@@ -35,6 +35,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    private JCheckBox term;
 	    private JButton sub;
 	    private JButton reset;
+	    private JButton alreadyHaveAnAccountButton;
 	    private JTextArea tout;
 	    private JLabel res;
 	    private JTextArea resadd;
@@ -64,7 +65,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    // with default values.
 	    public RegistrationFrame()
 	    {
-	        setTitle("Registration Form");
+	        setTitle("Stock Market Plovdvi University");
 	        setBounds(300, 90, 900, 600);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setResizable(false);
@@ -90,7 +91,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        tname.setLocation(200, 100);
 	        c.add(tname);
 	  
-	        mno = new JLabel("Mobile");
+	        mno = new JLabel("Country");
 	        mno.setFont(new Font("Arial", Font.PLAIN, 20));
 	        mno.setSize(100, 20);
 	        mno.setLocation(100, 150);
@@ -102,19 +103,21 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        tmno.setLocation(200, 150);
 	        c.add(tmno);
 	  
-	        gender = new JLabel("Gender");
+	        gender = new JLabel("City");
 	        gender.setFont(new Font("Arial", Font.PLAIN, 20));
 	        gender.setSize(100, 20);
 	        gender.setLocation(100, 200);
 	        c.add(gender);
-	  
+	        
+	        // may not be needed
 	        male = new JRadioButton("Male");
 	        male.setFont(new Font("Arial", Font.PLAIN, 15));
 	        male.setSelected(true);
 	        male.setSize(75, 20);
 	        male.setLocation(200, 200);
 	        c.add(male);
-	  
+	        
+	        // may not be needed
 	        female = new JRadioButton("Female");
 	        female.setFont(new Font("Arial", Font.PLAIN, 15));
 	        female.setSelected(false);
@@ -126,10 +129,10 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        gengp.add(male);
 	        gengp.add(female);
 	  
-	        dob = new JLabel("DOB");
+	        dob = new JLabel("Date of birth");
 	        dob.setFont(new Font("Arial", Font.PLAIN, 20));
-	        dob.setSize(100, 20);
-	        dob.setLocation(100, 250);
+	        dob.setSize(1000, 20);
+	        dob.setLocation(50, 250);
 	        c.add(dob);
 	  
 	        date = new JComboBox(dates);
@@ -150,36 +153,24 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        year.setLocation(320, 250);
 	        c.add(year);
 	  
-	        add = new JLabel("Address");
-	        add.setFont(new Font("Arial", Font.PLAIN, 20));
-	        add.setSize(100, 20);
-	        add.setLocation(100, 300);
-	        c.add(add);
-	  
-	        tadd = new JTextArea();
-	        tadd.setFont(new Font("Arial", Font.PLAIN, 15));
-	        tadd.setSize(200, 75);
-	        tadd.setLocation(200, 300);
-	        tadd.setLineWrap(true);
-	        c.add(tadd);
 	  
 	        term = new JCheckBox("Accept Terms And Conditions.");
 	        term.setFont(new Font("Arial", Font.PLAIN, 15));
 	        term.setSize(250, 20);
-	        term.setLocation(150, 400);
+	        term.setLocation(150, 300);
 	        c.add(term);
 	  
-	        sub = new JButton("Submit");
+	        sub = new JButton("Continue");
 	        sub.setFont(new Font("Arial", Font.PLAIN, 15));
 	        sub.setSize(100, 20);
-	        sub.setLocation(150, 450);
+	        sub.setLocation(150, 350);
 	        sub.addActionListener(this);
 	        c.add(sub);
 	  
 	        reset = new JButton("Reset");
 	        reset.setFont(new Font("Arial", Font.PLAIN, 15));
 	        reset.setSize(100, 20);
-	        reset.setLocation(270, 450);
+	        reset.setLocation(270, 350);
 	        reset.addActionListener(this);
 	        c.add(reset);
 	  
