@@ -8,17 +8,11 @@ import java.util.Map;
 public class Main {	
 public static void main(String[] args) {
 	DBHelper dbHelper = new DBHelper();
+	HashMap<String,ArrayList<String>> currentCountriesWithCities = dbHelper.getCountriesWithCitiesFromDataBase();
 	//RegistrationFrame registerFrame = new RegistrationFrame(dbHelper);
 	//LoginFrame login = new LoginFrame(dbHelper);
-	//RegistrationFrame frame = new RegistrationFrame();
+	RegistrationFrame frame = new RegistrationFrame(currentCountriesWithCities);	
 	
-	HashMap<String,ArrayList<String>> currentTestMap = dbHelper.getCountriesWithCitiesFromDataBase();
-	for(Map.Entry<String,ArrayList<String>> entry: currentTestMap.entrySet()) {
-		System.out.println(entry.getKey()+System.lineSeparator());
-		for(String towns:entry.getValue()) {
-			System.out.println(towns);
-		}
-		System.out.println(System.lineSeparator());
+
 	}
-}
 }

@@ -20,14 +20,6 @@ public class DBHelper {
 		*/
 	}
 	
-	public void test() {
-		try {
-			Connection connection = DriverManager.getConnection(this.getConnectionString());
-			System.out.println("Connected succsfuly.");
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-	}
 	
 	public HashMap<String,ArrayList<String>> getCountriesWithCitiesFromDataBase() {
 		HashMap<String,ArrayList<String>> countriesWithCities = null;

@@ -131,8 +131,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 	        
 	        if(e.getSource() == registerButton) {
 	        	this.dispose();
-	        	RegistrationFrame registerFrame = new RegistrationFrame();
-	        	registerFrame.setVisible(true);
+	        	//RegistrationFrame registerFrame = new RegistrationFrame();
+	        	//registerFrame.setVisible(true);
 	        }
 	    }
 }

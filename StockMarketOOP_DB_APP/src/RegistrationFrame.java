@@ -2,6 +2,8 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -21,7 +23,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    private JLabel name;
 	    private JTextField tname;
 	    private JLabel mno;
-	    private JTextField tmno;
+	    private JComboBox tmno;
 	    private JLabel gender;
 	    private JRadioButton male;
 	    private JRadioButton female;
@@ -63,7 +65,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	  
 	    // constructor, to initialize the components
 	    // with default values.
-	    public RegistrationFrame()
+	    public RegistrationFrame(HashMap<String,ArrayList<String>>countriesAndCities)
 	    {
 	        setTitle("Stock Market Plovdvi University");
 	        setBounds(300, 90, 900, 600);
@@ -97,7 +99,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        mno.setLocation(100, 150);
 	        c.add(mno);
 	  
-	        tmno = new JTextField();
+	        tmno = new JComboBox(countriesAndCities.keySet().toArray());
 	        tmno.setFont(new Font("Arial", Font.PLAIN, 15));
 	        tmno.setSize(150, 20);
 	        tmno.setLocation(200, 150);
@@ -204,13 +206,13 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    public void actionPerformed(ActionEvent e)
 	    {
 	        if (e.getSource() == sub) {
-	            if (term.isSelected()) {
+	           /* if (term.isSelected()) {
 	                String data1;
 	                String data
 	                    = "Name : "
 	                      + tname.getText() + "\n"
-	                      + "Mobile : "
-	                      + tmno.getText() + "\n";
+	                      + "Mobile : ";
+	                      //+ tmno.getText() + "\n";
 	                if (male.isSelected())
 	                    data1 = "Gender : Male"
 	                            + "\n";
@@ -225,31 +227,29 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	                      + "\n";
 	  
 	                String data3 = "Address : " + tadd.getText();
-	                tout.setText(data + data1 + data2 + data3);
+	                tout.setText(data + data1 + data2 + data3);*/
 	                tout.setEditable(false);
 	                res.setText("Registration Successfully..");
-	            }
-	            else {
+	            } else if (e.getSource() == reset) {
+		            String def = "";
+		            tname.setText(def);
+		            tadd.setText(def);
+		            tmno.setSelectedIndex(0);
+		            res.setText(def);
+		            tout.setText(def);
+		            term.setSelected(false);
+		            date.setSelectedIndex(0);
+		            month.setSelectedIndex(0);
+		            year.setSelectedIndex(0);
+		            resadd.setText(def);
+		        }else {
 	                tout.setText("");
 	                resadd.setText("");
 	                res.setText("Please accept the"
 	                            + " terms & conditions..");
-	            }
 	        }
 	  
-	        else if (e.getSource() == reset) {
-	            String def = "";
-	            tname.setText(def);
-	            tadd.setText(def);
-	            tmno.setText(def);
-	            res.setText(def);
-	            tout.setText(def);
-	            term.setSelected(false);
-	            date.setSelectedIndex(0);
-	            month.setSelectedIndex(0);
-	            year.setSelectedIndex(0);
-	            resadd.setText(def);
-	        }
+	        
 	    }
 
 }
