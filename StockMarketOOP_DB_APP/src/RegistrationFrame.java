@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 public class RegistrationFrame extends JFrame implements ActionListener {
 		private DBHelper dbHelper;
 		private HashMap<String,ArrayList<String>> countriesAndCities;
+		private StringBuilder sb;
 		// Components of the Form
 	    private Container c;
 	    private JLabel title;
@@ -78,6 +79,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    // with default values.
 	    public RegistrationFrame()
 	    {
+	    	this.sb = new StringBuilder();
 	    	this.dbHelper = new DBHelper();
 	    	this.countriesAndCities = this.dbHelper.getCountriesWithCities();
 	    	
@@ -305,10 +307,21 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    {
 	        if (e.getSource() == sub) {
 	        	
-	        	if(this.usernameValidation(tname.getText()).equalsIgnoreCase("Correct") &&
-	        			this.emailValidation(this.emailTextField.getText()).equalsIgnoreCase("Correct") &&
-	        			this.passwordValditaion("aafa").equalsIgnoreCase("Correct")) {
-	        		
+	        	if(!this.sb.isEmpty()) {
+	        		this.sb.delete(0, this.sb.length());
+	        	}
+	        	
+	        	String passwordString = new String(this.passwordField.getPassword());
+	        	String passwordValidationResult = this.passwordValditaion(passwordString);
+	        	String usernameValidationResult = this.usernameValidation(this.usernameTextField.getText());
+	        	String emailValidationResult = this.emailValidation(this.emailTextField.getText());
+	        	String namesValidationResult = this.nameValidation(this.tname.getText());
+	        	
+	        	if(passwordValidationResult.equalsIgnoreCase("Correct") &&
+	        			usernameValidationResult.equalsIgnoreCase("Correct") &&
+	        			emailValidationResult.equalsIgnoreCase("Correct") &&
+	        			namesValidationResult.equalsIgnoreCase("Correct")) {
+	        		// TO DO FINISH THIS
 	        	}
 	        	
 	           /* if (term.isSelected()) {
