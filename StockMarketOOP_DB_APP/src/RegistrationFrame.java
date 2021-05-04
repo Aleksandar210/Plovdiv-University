@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class RegistrationFrame extends JFrame implements ActionListener {
+	    private String[] registrationResults;
 		private DBHelper dbHelper;
 		private HashMap<String,ArrayList<String>> countriesAndCities;
 		private StringBuilder sb;
@@ -65,7 +66,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    private String months[]
 	        = { "Jan", "feb", "Mar", "Apr",
 	            "May", "Jun", "July", "Aug",
-	            "Sup", "Oct", "Nov", "Dec" };
+	            "Sep", "Oct", "Nov", "Dec" };
 	    private String years[]
 	        = { "1995", "1996", "1997", "1998",
 	            "1999", "2000", "2001", "2002",
@@ -80,6 +81,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    public RegistrationFrame()
 	    {
 	    	this.sb = new StringBuilder();
+	    	this.registrationResults = new String[4];
 	    	this.dbHelper = new DBHelper();
 	    	this.countriesAndCities = this.dbHelper.getCountriesWithCities();
 	    	
@@ -279,10 +281,10 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    }
 	    
 	    private String usernameValidation(String username) {
-	    	Pattern emailPattern = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
-	    	Matcher emailMatcher = emailPattern.matcher(username);
+	    	Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]{3,15}$");
+	    	Matcher usernameMatcher = usernamePattern.matcher(username);
 	    	
-	    	if(emailMatcher.find()) {
+	    	if(usernameMatcher.find()) {
 	    		return "Correct";
 	    	}else {
 	    		return "Not Correct";
@@ -297,6 +299,32 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	    		return "Correct";
 	    	}else {
 	    		return "Not Correct";
+	    	}
+	    }
+	    
+	    private void fillHintsForRegistration(String[] detailResults) {
+	    	//0 names 1 user name, 2 email, 3 password
+	    	for(int i =0;i<detailResults.length;i++) {
+	    		if(detailResults[i].equalsIgnoreCase("Not Correct")) {
+	    			switch(i) {
+	    			case 0:
+	    				this.sb.append("--Names must be 3 separated with a SPACE/Linem each name must start with capital letter"+System.lineSeparator());
+	    				this.sb.append(System.lineSeparator());
+	    				break;
+	    			case 1:
+	    				this.sb.append("--Username can be lower/capital letter with numbers and - and _ as special symbols only and 3 to 15 length"+System.lineSeparator());
+	    				this.sb.append(System.lineSeparator());
+	    				break;
+	    			case 2:
+	    				this.sb.append("--Email has to be example@example.com looking like the .com can be some other address"+System.lineSeparator());
+	    				this.sb.append(System.lineSeparator());
+	    				break;
+	    			case 3:
+	    				this.sb.append("Password has to contain at least 1 lower letter and 1 capital letter ,1 special symbol excpet @ and digits 0-9 and it should be 8-20 symbols long"+System.lineSeparator());
+	    				this.sb.append(System.lineSeparator());
+	    				break;
+	    			}
+	    		}
 	    	}
 	    }
 	    
@@ -317,12 +345,39 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        	String emailValidationResult = this.emailValidation(this.emailTextField.getText());
 	        	String namesValidationResult = this.nameValidation(this.tname.getText());
 	        	
+	        	this.registrationResults[0] = namesValidationResult;
+	        	this.registrationResults[1] = usernameValidationResult;
+	        	this.registrationResults[2] = emailValidationResult;
+	        	this.registrationResults[3] = passwordValidationResult;
+	        	
 	        	if(passwordValidationResult.equalsIgnoreCase("Correct") &&
 	        			usernameValidationResult.equalsIgnoreCase("Correct") &&
 	        			emailValidationResult.equalsIgnoreCase("Correct") &&
 	        			namesValidationResult.equalsIgnoreCase("Correct")) {
-	        		// TO DO FINISH THIS
+	        		
+	        		
+	        		
+	        		this.sb.append("Names: "+namesValidationResult+ System.lineSeparator());
+	        		this.sb.append("Username: "+usernameValidationResult +System.lineSeparator());
+	        		this.sb.append("Password: "+passwordValidationResult + System.lineSeparator());
+	        		this.sb.append("E-Mail: "+emailValidationResult + System.lineSeparator());
+	        		this.sb.append(System.lineSeparator());
+	        		this.sb.append("Registration was successful!");
+	        		this.tout.setText(this.sb.toString());
+	        		
+	        		//To Do do script for inserting user to database 
+	        		//and dispay to t field that everything went ok
+	        	}else {
+	        		this.sb.append("Names: "+namesValidationResult+ System.lineSeparator());
+	        		this.sb.append("Username: "+usernameValidationResult +System.lineSeparator());
+	        		this.sb.append("Password: "+passwordValidationResult + System.lineSeparator());
+	        		this.sb.append("E-Mail: "+emailValidationResult + System.lineSeparator());
+	        		this.sb.append(System.lineSeparator());
+	        		this.sb.append(System.lineSeparator());
+	        		this.fillHintsForRegistration(this.registrationResults);
+	        		this.tout.setText(this.sb.toString());
 	        	}
+	        	
 	        	
 	           /* if (term.isSelected()) {
 	                String data1;
@@ -350,11 +405,9 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	            } else if (e.getSource() == reset) {
 		            String def = "";
 		            this.tname.setText(def);
-		            this.tadd.setText(def);
 		            this.countries.setSelectedIndex(0);
 		            this.res.setText(def);
 		            tout.setText(def);
-		            term.setSelected(false);
 		            date.setSelectedIndex(0);
 		            month.setSelectedIndex(0);
 		            year.setSelectedIndex(0);
@@ -366,12 +419,7 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 		        	this.dispose();
 		        	LoginFrame login = new LoginFrame();
 		        	login.setVisible(true);      	
-		        }else {
-	                tout.setText("");
-	                resadd.setText("");
-	                res.setText("Please accept the"
-	                            + " terms & conditions..");
-	        }
+		        }
 	  
 	       
 	        
