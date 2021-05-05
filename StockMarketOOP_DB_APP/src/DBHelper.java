@@ -49,13 +49,7 @@ public class DBHelper {
 	public void registerNewUser(String[] userDetails) {
 		try {
 			Connection connection = DriverManager.getConnection(this.getConnectionString());
-			 PreparedStatement preparedStatementInsertAppCredentials = connection.prepareStatement("EXEC dbo.uspAddUserCredentials @Username = ?,@EmailAddress = ?, @PasswordString = ?");
-			 preparedStatementInsertAppCredentials.setString(1,userDetails[5]);
-			 preparedStatementInsertAppCredentials.setString(2, userDetails[4]);
-			 preparedStatementInsertAppCredentials.setString(3,userDetails[6]);
-			 
-			 int rowAddedAppCredentials = preparedStatementInsertAppCredentials.executeUpdate();
-			 
+			
 			 Statement statementToGetCityID = connection.createStatement();
 				ResultSet currentCityIDResult = statementToGetCityID.executeQuery("SELECT ID FROM Cities\r\n"
 						+ "WHERE CityName LIKE '"+userDetails[2]+"'");
@@ -65,12 +59,7 @@ public class DBHelper {
 			 
 			 PreparedStatement preparedStatementUserDetails = connection.prepareStatement("EXEC dbo.uspAddUserDetailsToUser @FirstName =?,@MiddleName =?,@LastName=?,@Age=?,@Username=?,@EmailAddress =?,@PasswordString=?,@CityID=?,@DateOfBirth=?"); 
 			 
-			 String[] userNames = userDetails[0].split(" ");
-			 preparedStatementUserDetails.setString(1,userNames[0]);
-			 preparedStatementUserDetails.setString(2,userNames[1]);
-			 preparedStatementUserDetails.setString(3,userNames[2]);
-			 
-			 
+					 
 			 
 			 String[] datePartsFromUserDetails = userDetails[3].split("-");
 			 LocalDate today = LocalDate.now();                     
@@ -78,25 +67,9 @@ public class DBHelper {
 					 ,this.getMonthNumber(datePartsFromUserDetails[1]),
 					 Integer.parseInt(datePartsFromUserDetails[2]));
 			 
-			 Period p = Period.between(birthday, today);
-			 
-			 preparedStatementUserDetails.setInt(4, p.getYears());
-			 
-			preparedStatementUserDetails.setString(5, userDetails[5]);
-			preparedStatementUserDetails.setString(6,userDetails[4]);
-			preparedStatementUserDetails.setString(7,userDetails[6]);
-			preparedStatementUserDetails.setInt(8,cityID);
-
-			preparedStatementUserDetails.setString(9, userDetails[3]);
+			 Period p = Period.between(birthday, today);		 
 			
-			 int rowAddedUserDetails = preparedStatementUserDetails.executeUpdate();
-			
-			 PreparedStatement preparedStatementAppCredentialsSetUser = connection.prepareStatement("EXEC dbo.uspUpdateAppCredentialUserKey @Username=?,@EmailAddress=?");
-			 preparedStatementAppCredentialsSetUser.setString(1,userDetails[5]);
-			 preparedStatementAppCredentialsSetUser.setString(2,userDetails[4]);
-			 
-			 int rowAddedUserDetailsUpdateAppCredentials =  preparedStatementAppCredentialsSetUser.executeUpdate();
-			 
+			 int rowAddedUserDetails = preparedStatementUserDetails.executeUpdate();			 
 			 
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
