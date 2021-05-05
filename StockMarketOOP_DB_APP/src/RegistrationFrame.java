@@ -339,6 +339,8 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        		this.sb.delete(0, this.sb.length());
 	        	}
 	        	
+	        
+	        	
 	        	String passwordString = new String(this.passwordField.getPassword());
 	        	String passwordValidationResult = this.passwordValditaion(passwordString);
 	        	String usernameValidationResult = this.usernameValidation(this.usernameTextField.getText());
@@ -365,8 +367,20 @@ public class RegistrationFrame extends JFrame implements ActionListener {
 	        		this.sb.append("Registration was successful!");
 	        		this.tout.setText(this.sb.toString());
 	        		
-	        		//To Do do script for inserting user to database 
-	        		//and dispay to t field that everything went ok
+	        		// 0 three-names, 1- Country, 2- City, 3 date of Birth, 4-email, 5-user name, 6 - password
+		        	String[] userDetailsGiven = new String[7];
+		        	userDetailsGiven[0] = this.tname.getText();
+		        	userDetailsGiven[1] = (String) this.countries.getSelectedItem();
+		        	userDetailsGiven[2] = (String) this.city.getSelectedItem();
+		        	String date = (String)this.year.getSelectedItem()+"-"+
+		        	(String)this.month.getSelectedItem()
+		        	+"-"+(String) this.date.getSelectedItem();
+		        	userDetailsGiven[3] = date;
+		        	userDetailsGiven[4] = this.emailTextField.getText();
+		        	userDetailsGiven[5] = this.usernameTextField.getText();
+		        	userDetailsGiven[6] = new String(this.passwordField.getPassword());
+		        			
+		        	this.dbHelper.registerNewUser(userDetailsGiven);    	
 	        	}else {
 	        		this.sb.append("Names: "+namesValidationResult+ System.lineSeparator());
 	        		this.sb.append("Username: "+usernameValidationResult +System.lineSeparator());

@@ -1,4 +1,5 @@
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 
 public class DBHelper {
 
-	private String connectionUrlSqlServer = "jdbc:sqlserver://localhost\\sqlexpress;databaseName=StockMarketDB;integratedSecurity=true";;
+	private String connectionUrlSqlServer = "jdbc:sqlserver://localhost\\sqlexpress;databaseName=StockMarketDB;integratedSecurity=true";
 	private HashMap<String,ArrayList<String>> currentCountriesWithCities;
 	public DBHelper() {
 		/*try {
@@ -48,12 +49,12 @@ public class DBHelper {
 	public void registerNewUser(String[] userDetails) {
 		try {
 			Connection connection = DriverManager.getConnection(this.getConnectionString());
-			 PreparedStatement preparedStatementInsertAppCredentials = connection.prepareStatement("INSERT INTO AppCredentials (Username,EmailAddress,UserPassword,UserID)\r\n"
-			 		+ "VALUES\r\n"
-			 		+ "	(?,?,?,0)");
+			 PreparedStatement preparedStatementInsertAppCredentials = connection.prepareStatement("EXEC dbo.uspAddUserCredentials @Username = ?,@EmailAddress = ?, @PasswordString = ?");
 			 preparedStatementInsertAppCredentials.setString(1,userDetails[5]);
 			 preparedStatementInsertAppCredentials.setString(2, userDetails[4]);
-			 preparedStatementInsertAppCredentials.setLong(3, 6);
+			 preparedStatementInsertAppCredentials.setString(3,userDetails[6]);
+			 
+			 int rowAddedAppCredentials = preparedStatementInsertAppCredentials.executeUpdate();
 			 
 			 Statement statementToGetCityID = connection.createStatement();
 				ResultSet currentCityIDResult = statementToGetCityID.executeQuery("SELECT ID FROM Cities\r\n"
@@ -62,14 +63,14 @@ public class DBHelper {
 			 currentCityIDResult.next();
 			 int cityID = currentCityIDResult.getInt("ID");
 			 
-			 PreparedStatement preparedStatementUserDetails = connection.prepareStatement("INSERT INTO Users (FirstName,MiddleName,LastName,Age,AppCredential,CityID,DateOfBirth)\r\n"
-			 		+ "VALUES\r\n"
-			 		+ "	(?,?,?,?,0,?,?)"); 
+			 PreparedStatement preparedStatementUserDetails = connection.prepareStatement("EXEC dbo.uspAddUserDetailsToUser @FirstName =?,@MiddleName =?,@LastName=?,@Age=?,@Username=?,@EmailAddress =?,@PasswordString=?,@CityID=?,@DateOfBirth=?"); 
 			 
 			 String[] userNames = userDetails[0].split(" ");
 			 preparedStatementUserDetails.setString(1,userNames[0]);
 			 preparedStatementUserDetails.setString(2,userNames[1]);
 			 preparedStatementUserDetails.setString(3,userNames[2]);
+			 
+			 
 			 
 			 String[] datePartsFromUserDetails = userDetails[3].split("-");
 			 LocalDate today = LocalDate.now();                     
@@ -81,8 +82,22 @@ public class DBHelper {
 			 
 			 preparedStatementUserDetails.setInt(4, p.getYears());
 			 
-			// preparedStatementUserDetails.setString()
-					
+			preparedStatementUserDetails.setString(5, userDetails[5]);
+			preparedStatementUserDetails.setString(6,userDetails[4]);
+			preparedStatementUserDetails.setString(7,userDetails[6]);
+			preparedStatementUserDetails.setInt(8,cityID);
+
+			preparedStatementUserDetails.setString(9, userDetails[3]);
+			
+			 int rowAddedUserDetails = preparedStatementUserDetails.executeUpdate();
+			
+			 PreparedStatement preparedStatementAppCredentialsSetUser = connection.prepareStatement("EXEC dbo.uspUpdateAppCredentialUserKey @Username=?,@EmailAddress=?");
+			 preparedStatementAppCredentialsSetUser.setString(1,userDetails[5]);
+			 preparedStatementAppCredentialsSetUser.setString(2,userDetails[4]);
+			 
+			 int rowAddedUserDetailsUpdateAppCredentials =  preparedStatementAppCredentialsSetUser.executeUpdate();
+			 
+			 
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 		}
