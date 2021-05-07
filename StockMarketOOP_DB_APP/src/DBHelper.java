@@ -135,7 +135,7 @@ public class DBHelper {
 			
 			String sqlStatement ="";
 			if(usernameEmail.contains("@")) {
-				sqlStatement = "EXEC  dbo.uspCheckLoginUserWithEmail @Email = ?,@Password =?";
+				sqlStatement = "SEECT ID FROM Users WHERE EmailAddress LIKE (?) AND";
 			}else {
 				sqlStatement = "EXEC   dbo.uspCheckLoginUserWithUsername  @Username = ?,@Password =?";
 			}
@@ -148,11 +148,8 @@ public class DBHelper {
 				
 			 if(currentLoginCheckBool.next()) {
 				 return true;
-			 }else {
-				 return false;
 			 }
 			 		 
-			 
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 		}
