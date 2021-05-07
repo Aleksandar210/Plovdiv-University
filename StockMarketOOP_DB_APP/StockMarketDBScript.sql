@@ -4,6 +4,28 @@ CREATE DATABASE StockMarketDB
 GO
 USE StockMarketDB
 
+GO
+CREATE TABLE ProductTypes(
+ID INT PRIMARY KEY IDENTITY NOT NULL,
+ProductTypeName NVARCHAR(40) NOT NULL
+);
+
+INSERT INTO ProductTypes(ProductTypeName)
+VALUES
+	('Electronics'),
+	('Food'),
+	('Clothes'),
+	('Vehicle'),
+	('Cryptocurrency'),
+	('Housing')
+
+	
+	
+
+	SELECT * FROM ProductTypes
+
+	USE StockMarketDB
+
 --Creating table Products
 GO
 CREATE TABLE Products(
@@ -24,6 +46,10 @@ DROP CONSTRAINT CHK_ProductQuantity
 
 ALTER TABLE Products
 DROP COLUMN ProductQuantity
+
+ALTER TABLE Products
+ADD ProductType INT FOREIGN KEY REFERENCES ProductTypes(ID) NOT NULL
+
 
 --Testing table insertion
 GO
@@ -211,3 +237,97 @@ AS
 GO
 
 --TO DO FINISH
+SELECT * FROM AppCredentials
+
+GO
+CREATE OR ALTER PROCEDURE dbo.uspAddUserCredentials
+    @Username VARCHAR(40), 
+    @EmailAddress VARCHAR(30), 
+    @PasswordString NVARCHAR(25) 
+AS
+BEGIN
+        INSERT INTO AppCredentials (Username,EmailAddress,UserPassword,UserID)
+        VALUES(@Username, @EmailAddress,HASHBYTES('SHA2_512', @PasswordString),0)
+END
+
+
+GO 
+CREATE Procedure dbo.uspAddUserDetailsToUser
+	@FirstName NVARCHAR(50),
+	@MiddleName NVARCHAR(50),
+	@LastName NVARCHAR(50),
+	@Age SMALLINT,
+	@Username VARCHAR(40), 
+    @EmailAddress VARCHAR(30), 
+    @PasswordString NVARCHAR(25), 
+	@CityID INT,
+	@DateOfBirth VARCHAR(20)
+AS
+BEGIN
+
+DECLARE @AppCredentialsID INT;
+SET @AppCredentialsID =  (SELECT ID FROM AppCredentials WHERE Username LIKE (@Username)
+AND EmailAddress LIKE (@EmailAddress)
+AND UserPassword LIKE (HASHBYTES('SHA2_512', @PasswordString)))
+
+INSERT INTO Users (FirstName,MiddleName,LastName,Age,WalletAmount,AppCredential,CityID,DateOfBirth)
+	VALUES
+		(@FirstName,@MiddleName,@LastName,@Age,500,@AppCredentialsID,@CityID,Cast(@DateOfBirth as datetime2))
+END
+
+GO
+CREATE PROCEDURE dbo.uspUpdateAppCredentialUserKey @Username VARCHAR(40), @EmailAddress VARCHAR(30)
+AS 
+BEGIN
+
+DECLARE @CurrentAppCredentialsID INT;
+SET @CurrentAppCredentialsID =  (SELECT ID FROM AppCredentials WHERE Username LIKE (@Username) AND EmailAddress LIKE (@EmailAddress))
+
+DECLARE @UserIDWithTheAppCredentials INT
+SET @UserIDWithTheAppCredentials = (SELECT ID FROM Users WHERE AppCredential =@CurrentAppCredentialsID)
+
+UPDATE AppCredentials SET UserID = @UserIDWithTheAppCredentials WHERE ID = @CurrentAppCredentialsID
+
+END
+
+ALTER TABLE AppCredentials
+DROP CONSTRAINT FK__AppCreden__UserI__4F7CD00D
+DROP TABLE AppCredentials
+
+ALTER TABLE Users 
+DROP CONSTRAINT FK__Users__AppCreden__4BAC3F29
+
+
+ALTER TABLE Users
+ADD EmailAddress VARCHAR(30) NOT NULL
+
+ALTER TABLE Users
+ADD Username VARCHAR(20) NOT NULL
+
+ALTER TABLE Users 
+ADD UserPassword BINARY(64) NOT NULL
+
+go
+CREATE PROCEDURE dbo.uspInsertUser
+@FirstName NVARCHAR(50),
+	@MiddleName NVARCHAR(50),
+	@LastName NVARCHAR(50),
+	@Age SMALLINT,
+	@Username VARCHAR(40), 
+    @EmailAddress VARCHAR(30), 
+    @PasswordString NVARCHAR(25), 
+	@CityID INT,
+	@DateOfBirth VARCHAR(20)
+	AS
+	BEGIN
+
+	INSERT INTO Users (FirstName,MiddleName,LastName,Age,WalletAmount,CityID,DateOfBirth,Username,UserPassword,EmailAddress)
+	VALUES
+		(@FirstName,@MiddleName,@LastName,@Age,500,@CityID,Cast(@DateOfBirth as datetime2),@Username,HASHBYTES('SHA2_512', @PasswordString),@EmailAddress)
+
+	END
+
+	USE StockMarketDB
+	SELECT * FROM Users
+	ALTER TABLE Users
+	DROP COLUMN AppCredential
