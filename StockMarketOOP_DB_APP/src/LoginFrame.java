@@ -110,6 +110,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 	            passwordText = passwordField.getText();
 	            if (this.isLoginInfoCorrect(userText, passwordText)) {
 	                JOptionPane.showMessageDialog(this, "Login Successful");
+	                this.dbHelper.checkLoginUser(userText,passwordText);
 	            } else {
 	                JOptionPane.showMessageDialog(this, "Invalid Username/E-mail or Password");
 	            }

@@ -57,7 +57,16 @@ public class DBHelper {
 			 currentCityIDResult.next();
 			 int cityID = currentCityIDResult.getInt("ID");
 			 
-			 PreparedStatement preparedStatementUserDetails = connection.prepareStatement("EXEC dbo.uspAddUserDetailsToUser @FirstName =?,@MiddleName =?,@LastName=?,@Age=?,@Username=?,@EmailAddress =?,@PasswordString=?,@CityID=?,@DateOfBirth=?"); 
+			 PreparedStatement preparedStatementUserDetails = connection.prepareStatement("EXEC dbo.uspInsertUser"
+			 		+ " @FirstName =?,"
+			 		+ "@MiddleName =?,"
+			 		+ "@LastName=?,"
+			 		+ "@Age=?,"
+			 		+ "@Username=?,"
+			 		+ "@EmailAddress =?,"
+			 		+ "@PasswordString=?,"
+			 		+ "@CityID=?,"
+			 		+ "@DateOfBirth=?"); 
 			 
 					 
 			 
@@ -67,7 +76,20 @@ public class DBHelper {
 					 ,this.getMonthNumber(datePartsFromUserDetails[1]),
 					 Integer.parseInt(datePartsFromUserDetails[2]));
 			 
-			 Period p = Period.between(birthday, today);		 
+			 Period p = Period.between(birthday, today);
+			 
+			 String[] userThreeNames = userDetails[0].split(" ");
+			 preparedStatementUserDetails.setString(1, userThreeNames[0]);
+			 preparedStatementUserDetails.setString(2, userThreeNames[1]);
+			 preparedStatementUserDetails.setString(3, userThreeNames[2]);
+			 
+			 preparedStatementUserDetails.setInt(4, p.getYears());
+			 
+			 preparedStatementUserDetails.setString(5, userDetails[5]);
+			 preparedStatementUserDetails.setString(6, userDetails[4]);
+			 preparedStatementUserDetails.setString(7, userDetails[6]);
+			 preparedStatementUserDetails.setInt(8, cityID);
+			 preparedStatementUserDetails.setString(9, userDetails[3]);
 			
 			 int rowAddedUserDetails = preparedStatementUserDetails.executeUpdate();			 
 			 
@@ -105,6 +127,38 @@ public class DBHelper {
 		}
 		
 		return countriesWithCities;
+	}
+	
+	public boolean checkLoginUser(String usernameEmail, String password) {
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			
+			String sqlStatement ="";
+			if(usernameEmail.contains("@")) {
+				sqlStatement = "EXEC  dbo.uspCheckLoginUserWithEmail @Email = ?,@Password =?";
+			}else {
+				sqlStatement = "EXEC   dbo.uspCheckLoginUserWithUsername  @Username = ?,@Password =?";
+			}
+			
+			 PreparedStatement statementToCheckLoging = connection.prepareStatement(sqlStatement);
+			 statementToCheckLoging.setString(1, usernameEmail);
+			 statementToCheckLoging.setString(2, password);
+			 
+				ResultSet currentLoginCheckBool = statementToCheckLoging.executeQuery();
+				
+			 if(currentLoginCheckBool.next()) {
+				 return true;
+			 }else {
+				 return false;
+			 }
+			 		 
+			 
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}
+		
+		return false;
+		
 	}
 	
 	public String getConnectionString() {
