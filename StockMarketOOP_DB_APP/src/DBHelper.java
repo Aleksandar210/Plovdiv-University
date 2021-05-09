@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 public class DBHelper {
 
+	private MyModel model = null;
 	private String connectionUrlSqlServer = "jdbc:sqlserver://localhost\\sqlexpress;databaseName=StockMarketDB;integratedSecurity=true";
 	private HashMap<String,ArrayList<String>> currentCountriesWithCities;
 	public DBHelper() {
@@ -99,6 +100,11 @@ public class DBHelper {
 		
 	}
 	
+	//0-ProductName, 1-ProductPriceOnDelivery,2-ProductPriceOnPurchase,3-ProductType
+	public void createProduct(String[] productDataGiven) {
+		
+	}
+	
 	private HashMap<String,ArrayList<String>> getCountriesWithCitiesFromDataBase() {
 		HashMap<String,ArrayList<String>> countriesWithCities = null;
 		try {
@@ -155,6 +161,44 @@ public class DBHelper {
 		}
 		
 		return false;
+		
+	}
+	
+	public MyModel getAllDataProducts() {
+		
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			PreparedStatement state=connection.prepareStatement("SELECT ProductTypes.ProductTypeName as Category,ProductName as [Product name], ProductPriceOnDelivery as [Delivary price],ProductPriceOnPurchase AS [PurchasePrice] FROM Products JOIN ProductTypes ON ProductTypes.ID=Products.ProductType");
+			ResultSet result = state.executeQuery();
+			 model = new MyModel(result);
+			 		 
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+		return model;
+		
+	}
+	
+	public MyModel getAllDataSales() {
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			PreparedStatement state=connection.prepareStatement("\r\n"
+					+ "SELECT ProductType AS [Category],ProductName AS [Product], CONCAT(Users.FirstName,' ',Users.MiddleName,' ',Users.LastName) AS [User] FROM ProductOffers\r\n"
+					+ "JOIN Products ON Products.ID = ProductOffers.ProductID\r\n"
+					+ "JOIN Users ON Users.ID = ProductOffers.UserID\r\n");
+			ResultSet result = state.executeQuery();
+			 model = new MyModel(result);
+			 		 
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return model;
 		
 	}
 	

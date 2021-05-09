@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -13,8 +15,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class MainFrame extends JFrame implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	DBHelper dbHelper;
 	 JTabbedPane tab = new JTabbedPane();
 	 
+	 String[] productCategories;
 		 
 		 JTable table = new JTable();
 		 JTable product_table = new JTable();
@@ -24,11 +32,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		 JScrollPane product_scroller = new JScrollPane(product_table);
 		 JScrollPane sales_scroller = new JScrollPane(sales_table);
 
-		 //pane users
-		 JPanel users = new JPanel();
-		 JPanel users_up = new JPanel();
-		 JPanel users_mid = new JPanel();
-		 JPanel users_down = new JPanel();
 		 
 		 //pane products
 		 JPanel products = new JPanel();
@@ -42,34 +45,21 @@ public class MainFrame extends JFrame implements ActionListener {
 		 JPanel sales_mid = new JPanel();
 		 JPanel sales_down = new JPanel();
 		 
-		 //user fields
-		 JLabel user_first_name = new JLabel("First Name:");
-		 JLabel user_last_name = new JLabel("Last Name:");
-		 JLabel user_age = new JLabel("Age:");
-		 JLabel user_city = new JLabel("City");
-		 JLabel user_street = new JLabel("Street");
-		 
-		 JTextField user_first_name_textF = new JTextField();
-		 JTextField user_last_name_textF = new JTextField();
-		 JTextField user_age_textF = new JTextField();
-		 JTextField user_city_textF = new JTextField();
-		 JTextField user_street_textF = new JTextField();
-		 
-		 JButton create_user = new JButton("Create");
-		 JButton edit_user = new JButton("Edit");
-		 JButton delete_user = new JButton("Delete");
-		 JButton search_user = new JButton("Search");
-		 // end of user fields
 		 
 		 //product fields
 		 
 		 JLabel product_quantity = new JLabel("Quantity:");
 		 JLabel product_price_delivery = new JLabel("Price(delivery):");
 		 JLabel product_price_sale = new JLabel("Price(sale):");
+		 JLabel product_Product_Name = new JLabel("Product name:");
+		 JLabel product_Product_CategoryOptionsLabel = new JLabel("Category:");
+		 
 		 
 		 JTextField product_quantity_textF = new JTextField();
 		 JTextField product_price_delivery_textF = new JTextField();
 		 JTextField product_price_sale_textF = new JTextField();
+		 JTextField product_Product_Name_textF = new JTextField();
+		 JComboBox product_Product_CategoryOptions;
 		 
 		 JButton create_product = new JButton("Create");
 		 JButton edit_product = new JButton("Edit");
@@ -100,45 +90,18 @@ public class MainFrame extends JFrame implements ActionListener {
 		 //end of sales fields
 		 
 		 public MainFrame() {
-			 this.setSize(500, 600);
-			 this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+			 productCategories = new String[] {"Electronics","Food","Clothes","Vehicle","Cryptocurrency","Housing"};
+			 product_Product_CategoryOptions = new JComboBox<String>(productCategories);
+			 this.dbHelper = new DBHelper();
+			 //this.setSize(500, 600);
+			 setTitle("Stock Market Plovdvi University");
+		        setBounds(300, 90, 900, 600);
+		        setDefaultCloseOperation(EXIT_ON_CLOSE);
+		        setResizable(false);
 			 //this.setLayout(new GridLayout(3, 1));
 			 
 			 //Users Panel and shit 
-			 tab.add(users, "Users");
-			 users_up.setLayout(new GridLayout(5, 2));
-			 
-			 users_up.add(user_first_name);
-			 users_up.add(user_first_name_textF);
-			 
-			 users_up.add(user_last_name);
-			 users_up.add(user_last_name_textF);
-			 
-			 users_up.add(user_age);
-			 users_up.add(user_age_textF);
-			 
-			 users_up.add(user_city);
-			 users_up.add(user_city_textF);
-			 
-			 users_up.add(user_street);
-			 users_up.add(user_street_textF);
-			 
-			 users_mid.add(create_user);
-			 users_mid.add(edit_user);
-			 users_mid.add(delete_user);
-			 users_mid.add(search_user);
-			 
-			 users_down.add(scroller);
-			 scroller.setPreferredSize(new Dimension(450,160));
-			 
-			 //fix this with dbHelper see what is inside the getAllData() method.
-			 //table.setModel(DBHelper.getAllData());
-			 
-			 users.add(users_up);
-			 users.add(users_mid);
-			 users.add(users_down);
-			 //End of users panel and shit
-			 
+			
 			 //Products and shit
 			 tab.add(products, "Products");
 			 products_top.setLayout(new GridLayout(5, 2));
@@ -152,6 +115,12 @@ public class MainFrame extends JFrame implements ActionListener {
 			 products_top.add(product_price_sale);
 			 products_top.add(product_price_sale_textF);
 			 
+			 products_top.add(product_Product_Name);
+			 products_top.add( product_Product_Name_textF);
+			 
+			 products_top.add(product_Product_CategoryOptionsLabel);
+			 products_top.add(product_Product_CategoryOptions);
+			 
 			 products_mid.add(create_product);
 			 products_mid.add(edit_product);
 			 products_mid.add(delete_product);
@@ -160,7 +129,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			 products_down.add(product_scroller);
 			 product_scroller.setPreferredSize(new Dimension(450,160));
 			 
-			 //product_table.setModel(DBHelper.getAllDataProducts());
+			 product_table.setModel(this.dbHelper.getAllDataProducts());
 			 
 			 products.add(products_top);
 			 products.add(products_mid);
@@ -198,7 +167,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			 sales_scroller.setPreferredSize(new Dimension(450,160));
 			 
 			 //fix this by looking what is inside the getAllDataSales() method and implementing it in DBHelper
-			 //sales_table.setModel(DBHelper.getAllDataSales());
+			 sales_table.setModel(this.dbHelper.getAllDataSales());
 			 
 			 sales.add(sales_top);
 			 sales.add(sales_mid);
@@ -211,10 +180,21 @@ public class MainFrame extends JFrame implements ActionListener {
 			 
 			 this.setVisible(true);
 		 }
+		 
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			//products buttons
+			 if (e.getSource() == create_product) {
+		            
+
+		        }
+			  
+			  //sales buttons
+			  //if (e.getSource() == create_sale) {
+		            
+
+		      //  }
 			
 		}
 }
