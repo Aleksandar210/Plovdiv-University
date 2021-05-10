@@ -2,19 +2,23 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JFrame {
 	/**
 	 * 
 	 */
@@ -47,6 +51,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		 
 		 
 		 //product fields
+		 
+		 private TableRowSorter<TableModel> rowSorter;
+         
 		 
 		 JLabel product_quantity = new JLabel("Quantity:");
 		 JLabel product_price_delivery = new JLabel("Price(delivery):");
@@ -82,9 +89,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		 JTextField sales_buyer_textF = new JTextField();
 		 JTextField sales_seller_textF = new JTextField();
 		 
-		 JButton create_sale = new JButton("Create");
-		 JButton edit_sale = new JButton("Edit");
-		 JButton delete_sale = new JButton("Delete");
 		 JButton search_sale = new JButton("Search");
 		 
 		 //end of sales fields
@@ -106,8 +110,7 @@ public class MainFrame extends JFrame implements ActionListener {
 			 tab.add(products, "Products");
 			 products_top.setLayout(new GridLayout(5, 2));
 			 
-			 products_top.add(product_quantity);
-			 products_top.add(product_quantity_textF);
+			
 			 
 			 products_top.add(product_price_delivery);
 			 products_top.add(product_price_delivery_textF);
@@ -116,51 +119,43 @@ public class MainFrame extends JFrame implements ActionListener {
 			 products_top.add(product_price_sale_textF);
 			 
 			 products_top.add(product_Product_Name);
-			 products_top.add( product_Product_Name_textF);
+			 products_top.add(product_Product_Name_textF);
 			 
 			 products_top.add(product_Product_CategoryOptionsLabel);
 			 products_top.add(product_Product_CategoryOptions);
 			 
-			 products_mid.add(create_product);
-			 products_mid.add(edit_product);
-			 products_mid.add(delete_product);
-			 products_mid.add(search_product);
+			 create_product.addActionListener(actionListenerCreateButton);
+			 delete_product.addActionListener(actionListenerDeleteButton);
+			
 			 
+			 
+			 products_mid.add(create_product);
+			 products_mid.add(search_product);
+			 products_mid.add(delete_product);
+			
 			 products_down.add(product_scroller);
 			 product_scroller.setPreferredSize(new Dimension(450,160));
 			 
 			 product_table.setModel(this.dbHelper.getAllDataProducts());
 			 
+			 
 			 products.add(products_top);
 			 products.add(products_mid);
 			 products.add(products_down);
 			 //End of products and shit
-			 
+			 rowSorter = new TableRowSorter<>(product_table.getModel());
 			 //Sales and shit
 			 tab.add(sales, "Sales");
 			 sales_top.setLayout(new GridLayout(5, 2));
 			 
 			 sales_top.add(sales_product);
 			 sales_top.add(sales_product_textF);
-			 
-			 sales_top.add(sales_product_quantity);
-			 sales_top.add(sales_product_quantity_textF);
-			 
-			 sales_top.add(sales_product_quantity);
-			 sales_top.add(sales_product_quantity_textF);
-			 
-			 sales_top.add(sales_profit);
-			 sales_top.add(sales_profit_textF);
-			 
+			 		 
+			
 			 sales_top.add(sales_seller);
 			 sales_top.add(sales_seller_textF);
 			 
-			 sales_top.add(sales_buyer);
-			 sales_top.add(sales_buyer_textF);
-			 
-			 sales_mid.add(create_sale);
-			 sales_mid.add(edit_sale);
-			 sales_mid.add(delete_sale);
+			
 			 sales_mid.add(search_sale);
 			 
 			 sales_down.add(sales_scroller);
@@ -181,20 +176,47 @@ public class MainFrame extends JFrame implements ActionListener {
 			 this.setVisible(true);
 		 }
 		 
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			//products buttons
-			 if (e.getSource() == create_product) {
-		            
-
-		        }
-			  
-			  //sales buttons
-			  //if (e.getSource() == create_sale) {
-		            
-
-		      //  }
+		 
+	
+		 
+		 ActionListener actionListenerCreateButton = new ActionListener() {
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			       String[] productDataGivenCreate = new String[4];
+			       
+			       productDataGivenCreate[0] = product_Product_Name_textF.getText();
+			       productDataGivenCreate[1] = product_price_delivery_textF.getText();
+			       productDataGivenCreate[2] = product_price_sale_textF.getText();
+			       productDataGivenCreate[3] = (String) product_Product_CategoryOptions.getSelectedItem();
+			       
+			       dbHelper.createProduct(productDataGivenCreate);
+			       dispose();
+			       MainFrame frameNew = new MainFrame();
+			       frameNew.setVisible(true);
+			    }
+			};
 			
-		}
+			ActionListener actionListenerDeleteButton = new ActionListener() {
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			       int row = product_table.getSelectedRow();
+			       int id = (int) product_table.getModel().getValueAt(row, 0);
+			       
+			       dbHelper.deleteProduct(id);
+			       
+			       dispose();
+			       MainFrame frameNew = new MainFrame();
+			       frameNew.setVisible(true);
+			    }
+			};
+			
+			
+
+			private String removeLastChar(String s) {
+			    if (s == null || s.length() == 0) {
+			        return s;
+			    }
+			    return s.substring(0, s.length()-1);
+			}
+		
 }

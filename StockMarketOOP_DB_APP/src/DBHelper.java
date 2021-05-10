@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -102,7 +103,57 @@ public class DBHelper {
 	
 	//0-ProductName, 1-ProductPriceOnDelivery,2-ProductPriceOnPurchase,3-ProductType
 	public void createProduct(String[] productDataGiven) {
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			
+			 PreparedStatement preparedStatementProductDetails = connection.prepareStatement("INSERT INTO Products(ProductName,ProductPriceOnDelivery,ProductPriceOnPurchase,ProductType)\r\n"
+			 		+ "	VALUES\r\n"
+			 		+ "		(?,?,?,(SELECT ID FROM ProductTypes WHERE ProductTypeName LIKE(?)))");	
+			
+			 preparedStatementProductDetails.setString(1,productDataGiven[0]);
+			 
+			 BigDecimal decimalDelivery = new BigDecimal(Integer.parseInt(productDataGiven[1]));
+			 BigDecimal decimalPurchase = new BigDecimal(Integer.parseInt(productDataGiven[2]));
+			 
+			 preparedStatementProductDetails.setBigDecimal(2, decimalDelivery);
+			 preparedStatementProductDetails.setBigDecimal(3, decimalPurchase);
+			 
+			 preparedStatementProductDetails.setString(4, productDataGiven[3]);
+			 
+			 preparedStatementProductDetails.executeUpdate();
+			 
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public void deleteProduct(int id) {
 		
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			
+			PreparedStatement preparedStatementProductDetails = connection.prepareStatement("UPDATE Products SET IsAvaialble = 0 WHERE ID =?");
+			preparedStatementProductDetails.setInt(1, id);		
+			preparedStatementProductDetails.executeUpdate();
+			 
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}
+		
+	}
+	
+	
+	
+	private int getCategoryKeyNumber(String categoryName) {
+		switch(categoryName) {
+		case "Electronics": return 1;
+		case "Food": return 2;
+		case "Clothes": return 3;
+		case "Vehicle": return 4;
+		case "Cryptocurrency": return 5;
+		case "Housing": return 6;
+		}
+		return 0;
 	}
 	
 	private HashMap<String,ArrayList<String>> getCountriesWithCitiesFromDataBase() {
@@ -168,7 +219,7 @@ public class DBHelper {
 		
 		try {
 			Connection connection = DriverManager.getConnection(this.getConnectionString());
-			PreparedStatement state=connection.prepareStatement("SELECT ProductTypes.ProductTypeName as Category,ProductName as [Product name], ProductPriceOnDelivery as [Delivary price],ProductPriceOnPurchase AS [PurchasePrice] FROM Products JOIN ProductTypes ON ProductTypes.ID=Products.ProductType");
+			PreparedStatement state=connection.prepareStatement("SELECT Products.ID as ID, ProductTypes.ProductTypeName as Category,ProductName as [Product name], ProductPriceOnDelivery as [Delivary price],ProductPriceOnPurchase AS [PurchasePrice] FROM Products JOIN ProductTypes ON ProductTypes.ID=Products.ProductType WHERE Products.IsAvaialble = 1");
 			ResultSet result = state.executeQuery();
 			 model = new MyModel(result);
 			 		 
