@@ -253,6 +253,68 @@ public class DBHelper {
 		
 	}
 	
+	//0-priceDelivery,1price purchase, 2 productName, 3 categoryProduct
+	public void editProducts(String[] productEditDetails, int ID) {
+		String sqlQuerry="UPDATE Products SET ProductPriceOnDelivery=?, "
+				+ "ProductPriceOnPurchase=?, ProductName=?,ProductType=? WHERE ID=?";
+		
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			PreparedStatement product_state;
+			 product_state = connection.prepareStatement(sqlQuerry);
+			
+			//these are with array parameter given in editProducts(HERE)
+			 BigDecimal decimalDelivery = new BigDecimal(Integer.parseInt(productEditDetails[0]));
+			 BigDecimal decimalPurchase = new BigDecimal(Integer.parseInt(productEditDetails[1]));
+			product_state.setBigDecimal(1,decimalDelivery);
+			product_state.setBigDecimal(2,decimalPurchase);
+			product_state.setString(3,productEditDetails[2]);
+			product_state.setInt(4,this.getCategoryKeyNumber(productEditDetails[3]));
+			product_state.setInt(5, ID);
+			
+			product_state.execute();
+			
+			//this is for main frame action lsitener
+			//product_table.setModel(DBHelper.getAllDataProducts());
+			
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+	}
+	
+	
+	public ResultSet searchProducts(String[] productSearchDetails) {
+		ResultSet resultFromSearch = null;
+		String sqlQuerry="SELECT Products.ID, ProductTypes.ProductTypeName AS [Category], Products.ProductName AS [Product Name],\r\n"
+				+ "		   Products.ProductPriceOnDelivery AS [Delivery price],\r\n"
+				+ "		   Products.ProductPriceOnPurchase AS [Purchase price]\r\n"
+				+ "		   FROM Products\r\n"
+				+ "		   JOIN ProductTypes ON ProductTypes.ID = Products.ProductType\r\n"                               //'%Alien%'
+				+ "		   WHERE Products.ProductPriceOnDelivery<=? AND Products.ProductPriceOnPurchase<=? AND ProductName LIKE(?) AND Prducts.ProductType=?";
+		
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			
+			PreparedStatement searchProduct = connection.prepareStatement(sqlQuerry);
+			searchProduct.setBigDecimal(1,new BigDecimal(Integer.parseInt(productSearchDetails[0])));
+			searchProduct.setBigDecimal(2,new BigDecimal(Integer.parseInt(productSearchDetails[1])));
+			searchProduct.setString(3, "'%"+productSearchDetails[2]+"%'");
+			searchProduct.setInt(4, this.getCategoryKeyNumber(productSearchDetails[3]));
+			
+			 resultFromSearch = searchProduct.executeQuery();
+			
+			//this is for main frame action listener
+			//product_table.setModel(DBHelper.getAllDataProducts());
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return resultFromSearch; 
+	}
+	
 	public String getConnectionString() {
 		return this.connectionUrlSqlServer;
     }

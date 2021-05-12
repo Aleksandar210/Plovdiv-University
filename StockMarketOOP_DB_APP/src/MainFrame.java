@@ -126,12 +126,13 @@ public class MainFrame extends JFrame {
 			 
 			 create_product.addActionListener(actionListenerCreateButton);
 			 delete_product.addActionListener(actionListenerDeleteButton);
-			
+			 edit_product.addActionListener(new EditProductAction());
 			 
 			 
 			 products_mid.add(create_product);
 			 products_mid.add(search_product);
 			 products_mid.add(delete_product);
+			 products_mid.add(edit_product);
 			
 			 products_down.add(product_scroller);
 			 product_scroller.setPreferredSize(new Dimension(450,160));
@@ -174,6 +175,46 @@ public class MainFrame extends JFrame {
 			 this.add(tab);
 			 
 			 this.setVisible(true);
+		 }
+		 
+		 
+		private class EditProductAction implements ActionListener{
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				
+					  int row = product_table.getSelectedRow();
+				       int id = (int) product_table.getModel().getValueAt(row, 0);
+					
+					String[] productsDataEdited = new String[] {product_price_delivery_textF.getText()
+							,product_price_sale_textF.getText()
+							,product_Product_Name_textF.getText()
+							,(String) product_Product_CategoryOptions.getSelectedItem()};
+					dbHelper.editProducts(productsDataEdited,id);
+					
+				product_table.setModel(dbHelper.getAllDataProducts());
+				}
+			 }
+		
+		
+		
+		private class SearchProductAction implements ActionListener{
+			 
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				
+					String[] productsDataSearchBy = new String[] {product_price_delivery_textF.getText()
+							,product_price_sale_textF.getText()
+							,product_Product_Name_textF.getText()
+							,(String) product_Product_CategoryOptions.getSelectedItem()};
+					
+				try {
+					product_table.setModel(new MyModel(dbHelper.searchProducts(productsDataSearchBy)));
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			 }
 		 }
 		 
 		 
