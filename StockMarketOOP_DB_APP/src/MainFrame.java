@@ -127,7 +127,7 @@ public class MainFrame extends JFrame {
 			 create_product.addActionListener(actionListenerCreateButton);
 			 delete_product.addActionListener(actionListenerDeleteButton);
 			 edit_product.addActionListener(new EditProductAction());
-			 
+			 search_product.addActionListener(new SearchProductAction());
 			 
 			 products_mid.add(create_product);
 			 products_mid.add(search_product);
@@ -231,9 +231,8 @@ public class MainFrame extends JFrame {
 			       productDataGivenCreate[3] = (String) product_Product_CategoryOptions.getSelectedItem();
 			       
 			       dbHelper.createProduct(productDataGivenCreate);
-			       dispose();
-			       MainFrame frameNew = new MainFrame();
-			       frameNew.setVisible(true);
+			       
+			       product_table.setModel(dbHelper.getAllDataProducts());
 			    }
 			};
 			
@@ -245,9 +244,7 @@ public class MainFrame extends JFrame {
 			       
 			       dbHelper.deleteProduct(id);
 			       
-			       dispose();
-			       MainFrame frameNew = new MainFrame();
-			       frameNew.setVisible(true);
+			       product_table.setModel(dbHelper.getAllDataProducts());
 			    }
 			};
 			

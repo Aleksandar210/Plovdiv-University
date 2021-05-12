@@ -292,7 +292,7 @@ public class DBHelper {
 				+ "		   Products.ProductPriceOnPurchase AS [Purchase price]\r\n"
 				+ "		   FROM Products\r\n"
 				+ "		   JOIN ProductTypes ON ProductTypes.ID = Products.ProductType\r\n"                               //'%Alien%'
-				+ "		   WHERE Products.ProductPriceOnDelivery<=? AND Products.ProductPriceOnPurchase<=? AND ProductName LIKE(?) AND Prducts.ProductType=?";
+				+ "		   WHERE Products.ProductPriceOnDelivery<=? AND Products.ProductPriceOnPurchase<=? AND ProductName LIKE(?) AND Products.ProductType=?";
 		
 		try {
 			Connection connection = DriverManager.getConnection(this.getConnectionString());
@@ -300,7 +300,7 @@ public class DBHelper {
 			PreparedStatement searchProduct = connection.prepareStatement(sqlQuerry);
 			searchProduct.setBigDecimal(1,new BigDecimal(Integer.parseInt(productSearchDetails[0])));
 			searchProduct.setBigDecimal(2,new BigDecimal(Integer.parseInt(productSearchDetails[1])));
-			searchProduct.setString(3, "'%"+productSearchDetails[2]+"%'");
+			searchProduct.setString(3, "%"+productSearchDetails[2]+"%");
 			searchProduct.setInt(4, this.getCategoryKeyNumber(productSearchDetails[3]));
 			
 			 resultFromSearch = searchProduct.executeQuery();
