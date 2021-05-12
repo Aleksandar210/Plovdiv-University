@@ -27,7 +27,9 @@ public class MainFrame extends JFrame {
 	 JTabbedPane tab = new JTabbedPane();
 	 
 	 String[] productCategories;
-		 
+	
+	 int userID;
+	 
 		 JTable table = new JTable();
 		 JTable product_table = new JTable();
 		 JTable sales_table = new JTable();
@@ -68,6 +70,7 @@ public class MainFrame extends JFrame {
 		 JTextField product_Product_Name_textF = new JTextField();
 		 JComboBox product_Product_CategoryOptions;
 		 
+		 JButton buy_sale = new JButton("Buy");
 		 JButton create_product = new JButton("Create");
 		 JButton edit_product = new JButton("Edit");
 		 JButton delete_product = new JButton("Delete");
@@ -93,7 +96,8 @@ public class MainFrame extends JFrame {
 		 
 		 //end of sales fields
 		 
-		 public MainFrame() {
+		 public MainFrame(int userID) {
+			 this.userID = userID;
 			 productCategories = new String[] {"Electronics","Food","Clothes","Vehicle","Cryptocurrency","Housing"};
 			 product_Product_CategoryOptions = new JComboBox<String>(productCategories);
 			 this.dbHelper = new DBHelper();
@@ -151,13 +155,17 @@ public class MainFrame extends JFrame {
 			 
 			 sales_top.add(sales_product);
 			 sales_top.add(sales_product_textF);
-			 		 
+			 		
 			
 			 sales_top.add(sales_seller);
 			 sales_top.add(sales_seller_textF);
 			 
+			 sales_profit_textF.setEditable(false);
+			 sales_top.add(sales_profit);
+			 sales_top.add(sales_profit_textF);
 			
 			 sales_mid.add(search_sale);
+			 sales_mid.add(buy_sale);
 			 
 			 sales_down.add(sales_scroller);
 			 sales_scroller.setPreferredSize(new Dimension(450,160));
@@ -231,7 +239,7 @@ public class MainFrame extends JFrame {
 			       productDataGivenCreate[3] = (String) product_Product_CategoryOptions.getSelectedItem();
 			       
 			       dbHelper.createProduct(productDataGivenCreate);
-			       
+			       dbHelper.createOfferByUser(userID);
 			       product_table.setModel(dbHelper.getAllDataProducts());
 			    }
 			};

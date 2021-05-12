@@ -215,6 +215,41 @@ public class DBHelper {
 		
 	}
 	
+	public void createOfferByUser(int userID) {
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			PreparedStatement state=connection.prepareStatement("INSERT INTO ProductOffers(UserID,ProductID,DateOfOffer) VALUES(?,(SELECT IDENT_CURRENT('Products')),GETDATE())");
+			state.setInt(1, userID);
+			state.execute();
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public int getUserIDLogin(String userText) {
+		String sqlQuery = "";
+		int ID =0;
+		if(userText.contains("@")) {
+			sqlQuery = "SELECT ID FROM Users WHERE EmailAddress LIKE(?)";
+		}else{
+			sqlQuery = "SELECT ID FROM Users WHERE Username LIKE(?)";
+		}
+		
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			PreparedStatement state=connection.prepareStatement(sqlQuery);
+			state.setString(1, userText);
+			ResultSet result = state.executeQuery();
+			
+			result.next();
+			 ID = result.getInt("ID");
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}
+		
+		return ID;
+	}
+	
 	public MyModel getAllDataProducts() {
 		
 		try {
@@ -237,9 +272,10 @@ public class DBHelper {
 		try {
 			Connection connection = DriverManager.getConnection(this.getConnectionString());
 			PreparedStatement state=connection.prepareStatement("\r\n"
-					+ "SELECT ProductType AS [Category],ProductName AS [Product], CONCAT(Users.FirstName,' ',Users.MiddleName,' ',Users.LastName) AS [User] FROM ProductOffers\r\n"
+					+ "SELECT ProductOffers.ID AS [Offer ID], ProductTypes.ProductTypeName AS [Category],ProductName AS [Product], Users.Username AS [User],Products.ProductPriceOnPurchase AS [Price] FROM ProductOffers\r\n"
 					+ "JOIN Products ON Products.ID = ProductOffers.ProductID\r\n"
-					+ "JOIN Users ON Users.ID = ProductOffers.UserID\r\n");
+					+ "JOIN Users ON Users.ID = ProductOffers.UserID\r\n"
+					+ "JOIN ProductTypes ON Products.ProductType = ProductTypes.ID");
 			ResultSet result = state.executeQuery();
 			 model = new MyModel(result);
 			 		 

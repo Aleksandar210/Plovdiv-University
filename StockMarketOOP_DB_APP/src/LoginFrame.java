@@ -112,7 +112,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 	               // JOptionPane.showMessageDialog(this, "Login Successful");
 	               if(!this.dbHelper.checkLoginUser(userText,passwordText)) {
 	            	   this.dispose();
-	   	        	MainFrame mainFrame= new MainFrame();
+	   	        	MainFrame mainFrame= new MainFrame(this.dbHelper.getUserIDLogin(userText));
 	   	        	mainFrame.setVisible(true);
 	               }
 	            } else {
