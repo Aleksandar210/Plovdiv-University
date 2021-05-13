@@ -215,6 +215,61 @@ public class DBHelper {
 		
 	}
 	
+	public void buyProductFromOffers(int productOfferID, int currentUserLogedID) {
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			PreparedStatement state=connection.prepareStatement("INSERT INTO PurcahsesMade(OfferID,UserID) VALUES (?,?)");
+			state.setInt(1, productOfferID);
+			state.setInt(2,currentUserLogedID);
+			state.execute();
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	//use for purchases made button to visualise the data
+public MyModel getAllPurchasesMadeModelOffers() {
+		
+		try {
+			Connection connection = DriverManager.getConnection(this.getConnectionString());
+			PreparedStatement state=connection.prepareStatement("SELECT ProductName AS [Product bought], Username AS [Bought by], Products.ProductPriceOnPurchase AS [Bought for], ProductOffers.DateOfOffer AS [Bought on]  FROM PurcahsesMade\r\n"
+					+ "JOIN Users ON Users.ID = PurcahsesMade.UserID\r\n"
+					+ "JOIN ProductOffers ON ProductOffers.ID  = PurcahsesMade.OfferID\r\n"
+					+ "JOIN Products ON ProductOffers.ProductID = Products.ID");
+			ResultSet result = state.executeQuery();
+			 model = new MyModel(result);
+			 		 
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+		return model;
+		
+	}
+
+
+public MyModel getAllPurchasedProductsMadeModel() {
+	
+	try {
+		Connection connection = DriverManager.getConnection(this.getConnectionString());
+		PreparedStatement state=connection.prepareStatement("SELECT ProductName FROM PurcahsesMade\r\n"
+				+ "JOIN ProductOffers ON ProductOffers.ID = PurcahsesMade.OfferID\r\n"
+				+ "JOIN Products ON Products.ID = ProductOffers.ProductID");
+		ResultSet result = state.executeQuery();
+		 model = new MyModel(result);
+		 		 
+	}catch(SQLException e){
+		System.out.println(e.getMessage());
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println(e.getMessage());
+	}
+	return model;
+	
+}
+	
 	public void createOfferByUser(int userID) {
 		try {
 			Connection connection = DriverManager.getConnection(this.getConnectionString());
@@ -273,9 +328,10 @@ public class DBHelper {
 			Connection connection = DriverManager.getConnection(this.getConnectionString());
 			PreparedStatement state=connection.prepareStatement("\r\n"
 					+ "SELECT ProductOffers.ID AS [Offer ID], ProductTypes.ProductTypeName AS [Category],ProductName AS [Product], Users.Username AS [User],Products.ProductPriceOnPurchase AS [Price] FROM ProductOffers\r\n"
-					+ "JOIN Products ON Products.ID = ProductOffers.ProductID\r\n"
-					+ "JOIN Users ON Users.ID = ProductOffers.UserID\r\n"
-					+ "JOIN ProductTypes ON Products.ProductType = ProductTypes.ID");
+					+ " JOIN Products ON Products.ID = ProductOffers.ProductID\r\n"
+					+ " JOIN Users ON Users.ID = ProductOffers.UserID\r\n"
+					+ " JOIN ProductTypes ON Products.ProductType = ProductTypes.ID\r\n"
+					+ " WHERE Products.IsAvaialble=1");
 			ResultSet result = state.executeQuery();
 			 model = new MyModel(result);
 			 		 
@@ -288,6 +344,8 @@ public class DBHelper {
 		return model;
 		
 	}
+	
+	
 	
 	//0-priceDelivery,1price purchase, 2 productName, 3 categoryProduct
 	public void editProducts(String[] productEditDetails, int ID) {

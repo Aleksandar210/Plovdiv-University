@@ -70,7 +70,7 @@ public class MainFrame extends JFrame {
 		 JTextField product_Product_Name_textF = new JTextField();
 		 JComboBox product_Product_CategoryOptions;
 		 
-		 JButton buy_sale = new JButton("Buy");
+		
 		 JButton create_product = new JButton("Create");
 		 JButton edit_product = new JButton("Edit");
 		 JButton delete_product = new JButton("Delete");
@@ -92,7 +92,10 @@ public class MainFrame extends JFrame {
 		 JTextField sales_buyer_textF = new JTextField();
 		 JTextField sales_seller_textF = new JTextField();
 		 
-		 JButton search_sale = new JButton("Search");
+		 JButton users_who_made_purchase = new JButton("Purchases");
+		 JButton products_bought = new JButton("Purchased products");
+		 JButton product_offers = new JButton("Product offers");
+		 JButton buy_sale = new JButton("Buy");
 		 
 		 //end of sales fields
 		 
@@ -153,19 +156,26 @@ public class MainFrame extends JFrame {
 			 tab.add(sales, "Sales");
 			 sales_top.setLayout(new GridLayout(5, 2));
 			 
-			 sales_top.add(sales_product);
-			 sales_top.add(sales_product_textF);
+			 //sales_top.add(sales_product);
+			 //sales_top.add(sales_product_textF);
 			 		
 			
-			 sales_top.add(sales_seller);
-			 sales_top.add(sales_seller_textF);
+			// sales_top.add(sales_seller);
+			// sales_top.add(sales_seller_textF);
 			 
-			 sales_profit_textF.setEditable(false);
-			 sales_top.add(sales_profit);
-			 sales_top.add(sales_profit_textF);
+			 
+			 //sales_top.add(sales_profit);
+			// sales_top.add(sales_profit_textF);
 			
-			 sales_mid.add(search_sale);
+			 buy_sale.addActionListener(new  buyProductFromOffers());
+			 users_who_made_purchase.addActionListener(new displayPurchasesMade());
+			 product_offers.addActionListener(new displayOffers());
+			 products_bought.addActionListener(new displayPurchasedProducts());
+			 
+			 sales_mid.add(users_who_made_purchase);
+			 sales_mid.add(products_bought);
 			 sales_mid.add(buy_sale);
+			 sales_mid.add(product_offers);
 			 
 			 sales_down.add(sales_scroller);
 			 sales_scroller.setPreferredSize(new Dimension(450,160));
@@ -184,6 +194,45 @@ public class MainFrame extends JFrame {
 			 
 			 this.setVisible(true);
 		 }
+		 
+		 private class buyProductFromOffers implements ActionListener{
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				
+					  int row = sales_table.getSelectedRow();
+				       int id = (int) sales_table.getModel().getValueAt(row, 0);
+				       
+				       dbHelper.buyProductFromOffers(id, userID);
+				       
+				//product_table.setModel(dbHelper.getAllDataProducts());
+				}
+			 }
+		 
+		 
+		 private class displayPurchasesMade implements ActionListener{
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				sales_table.setModel(dbHelper.getAllPurchasesMadeModelOffers());
+				}
+			 }
+		 
+		 private class displayPurchasedProducts implements ActionListener{
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				sales_table.setModel(dbHelper.getAllPurchasedProductsMadeModel());
+				}
+			 }
+		 
+		 private class displayOffers implements ActionListener{
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				sales_table.setModel(dbHelper.getAllDataProducts());
+				}
+			 }
 		 
 		 
 		private class EditProductAction implements ActionListener{
