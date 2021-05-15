@@ -230,7 +230,7 @@ public class MainFrame extends JFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-				sales_table.setModel(dbHelper.getAllDataProducts());
+				sales_table.setModel(dbHelper.getAllDataSales());
 				}
 			 }
 		 
