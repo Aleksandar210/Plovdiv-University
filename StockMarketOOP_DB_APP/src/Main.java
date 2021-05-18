@@ -8,7 +8,6 @@ public static void main(String[] args) {
 	//String alexName = "Alexander";
 	//System.out.println("SELECT ID FROM Cities\r\n"
 					//	+ "WHERE CityName LIKE '"+alexName+"'");
-
 	}
 
 
