@@ -5,9 +5,14 @@ public class Dwarf implements IObserver {
     private String toyTypeToMake;
     private String[] toyTypeDetails;
 
-    public Dwarf(Board currentBoardAssignedTo,String dwarfName){
+    private Toy createdToy;
+
+    private Workshop currentWorkshop;
+
+    public Dwarf(Board currentBoardAssignedTo,String dwarfName, Workshop workshop){
         this.board = currentBoardAssignedTo;
         this.setName(dwarfName);
+        this.currentWorkshop = new Workshop();
     }
 
     public String getName(){
@@ -24,6 +29,8 @@ public class Dwarf implements IObserver {
         this.toyTypeToMake = this.board.getToyType();
         this.toyTypeDetails = this.board.getToyDetails();
 
-        //after we get the toy from the board we use the factory (Workshop) to make the toy
+        createdToy = currentWorkshop.createToy(this.getName(),this.toyTypeToMake,this.toyTypeDetails);
+
+        System.out.println(createdToy);
     }
 }

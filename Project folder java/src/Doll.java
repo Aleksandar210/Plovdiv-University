@@ -8,6 +8,10 @@ public class Doll extends Toy {
 
     public Doll(String createdBy, Date currentDateOfCreation, String... toyDetails) {
         super(createdBy, currentDateOfCreation, null);
+
+        this.setHairColor(toyDetails[0]);
+        this.setDollHeight(toyDetails[1]);
+        this.setDollWidth(toyDetails[2]);
     }
 
     private void setHairColor(String hairColor){
@@ -36,6 +40,13 @@ public class Doll extends Toy {
 
     @Override
     public String toString() {
-        return super.toString();
+        String currentToy = String.format("A %s haired doll tall %f with %f width",
+                this.getHairColor(),
+                this.getDollHeight(),
+                this.getDollWidth());
+
+        String createdByContent = super.toString();
+
+        return currentToy + System.lineSeparator() + createdByContent;
     }
 }

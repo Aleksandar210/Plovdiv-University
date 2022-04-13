@@ -10,8 +10,8 @@ public class SantaClaus {
     private ArrayList<String> commands;
 
     //commands Santa claus will give
-    ISantaCommand dollCommand;
-    ISantaCommand bikeCommand;
+    ISantaToyCommand dollCommand;
+    ISantaToyCommand bikeCommand;
 
     //method to read commands from file
     public void readCommandsFromFile(String fileLocation){
@@ -23,6 +23,7 @@ public class SantaClaus {
         }
     }
 
+    //set command properties for toy
     public void executeCommandsFromSanta(){
         for(String command : commands){
 
@@ -34,9 +35,13 @@ public class SantaClaus {
             if (commandType.equalsIgnoreCase("create")){
 
                 if(toyType.equalsIgnoreCase(("doll"))){
+                    // prepare toy Details
+                    this.dollCommand.setToyDetails();
                     this.dollCommand.execute();
 
                 }else if(toyType.equalsIgnoreCase("bike")){
+                    //prepare bike commands
+                    this.bikeCommand.setToyDetails();
                     this.bikeCommand.execute();
                 }
 
