@@ -20,7 +20,7 @@ public class Dwarf implements IObserver {
     }
 
     private void setName(String dwarfName){
-        this.name = name;
+        this.name = dwarfName;
     }
 
     //the update method
@@ -31,6 +31,6 @@ public class Dwarf implements IObserver {
 
         createdToy = currentWorkshop.createToy(this.getName(),this.toyTypeToMake,this.toyTypeDetails);
 
-        System.out.println(createdToy);
+        System.out.println(System.lineSeparator() + createdToy);
     }
 }

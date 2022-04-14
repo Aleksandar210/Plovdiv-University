@@ -5,6 +5,10 @@ public class Board implements IObservable {
     private String[] toyDetails;
     private HashMap<String,IObserver> currentDwarfsAssignedToBoard;
 
+    public Board(){
+        this.currentDwarfsAssignedToBoard = new HashMap<String,IObserver>();
+    }
+
     public void setToyToMake(String toyType,String...toyDetails){
         this.setToyType(toyType);
         this.setToyDetails(toyDetails);

@@ -1,0 +1,23 @@
+Create::Doll::Blue::1.50::5.0
+Create::Doll::Green::3.56::2.65
+Create::Bike::Light Green::1::6
+Create::Doll::Blonde::1.44::7.45
+Create::Bike::Light Blue::3::6
+Create::Doll::Dark::8.55::5.5
+Create::Doll::Brown::1.50::5.0
+Create::Bike::Black::2::6
+Create::Doll::Orange::1.50::5.0
+Create::Doll::Purple::1.50::5.0
+Create::Bike::Blue::2::6
+Create::Bike::Orange::1::6
+Create::Bike::Dark Orange::7::6
+Create::Bike::Light Blue::3::6
+Create::Bike::Purple::2::6
+Create::Bike::Red::9::6
+Create::Bike::Pink::2::6
+Create::Bike::Light Blue::2::6
+Create::Doll::Dark::8.55::5.5
+Create::Doll::Brown::1.50::5.0
+Create::Bike::Light Blue::3::6
+Create::Bike::Purple::2::6
+

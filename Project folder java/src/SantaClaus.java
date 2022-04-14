@@ -13,13 +13,18 @@ public class SantaClaus {
     ISantaToyCommand dollCommand;
     ISantaToyCommand bikeCommand;
 
+    public SantaClaus(Board magicBoard){
+        this.dollCommand = new CreateDollCommand(magicBoard);
+        this.bikeCommand = new CreateBikeCommand(magicBoard);
+    }
+
     //method to read commands from file
     public void readCommandsFromFile(String fileLocation){
 
         try (Stream<String> lines = Files.lines(Paths.get(fileLocation))) {
             this.commands = (ArrayList<String>) lines.collect(Collectors.toList());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("End");
         }
     }
 
@@ -35,13 +40,11 @@ public class SantaClaus {
             if (commandType.equalsIgnoreCase("create")){
 
                 if(toyType.equalsIgnoreCase(("doll"))){
-                    // prepare toy Details
-                    this.dollCommand.setToyDetails();
+                    this.dollCommand.setToyDetails(commandParts[2], commandParts[3], commandParts[4]);
                     this.dollCommand.execute();
 
                 }else if(toyType.equalsIgnoreCase("bike")){
-                    //prepare bike commands
-                    this.bikeCommand.setToyDetails();
+                    this.bikeCommand.setToyDetails(commandParts[2], commandParts[3], commandParts[4]);
                     this.bikeCommand.execute();
                 }
 
